@@ -75,8 +75,10 @@
             <property name="ignoreNumbers" value="-1,0,1,0.0,1.0,100"/>
             <property name="ignoreAnnotation" value="true"/>
         </module>
+        <module name="UnusedImports"/>
     </module>
     <module name="SuppressionFilter">
         <property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>
+        <property name="optional" value="false"/>
     </module>
 </module>

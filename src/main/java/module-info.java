@@ -7,5 +7,6 @@
  * <p>All other packages within this module are kept internal and not exported.</p>
  */
 module dev.sorn.fql {
+    requires org.antlr.antlr4.runtime;
     exports dev.sorn.fql.api;
 }

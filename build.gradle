@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'checkstyle'
     id 'jacoco'
+    id 'antlr'
 }
 
 apply plugin: dev.sorn.fql.CoveragePlugin
@@ -22,6 +23,8 @@ repositories {
 }
 
 dependencies {
+    antlr "org.antlr:antlr4:4.13.2"
+    implementation "org.antlr:antlr4-runtime:4.13.2"
     testImplementation(platform("org.junit:junit-bom:${junitVersion}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
@@ -53,17 +56,13 @@ checkstyle {
     configDirectory = file("${rootDir}/config/checkstyle")
     ignoreFailures = false
     maxWarnings = 0
-    checkstyleMain {
-        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
-    }
-    checkstyleTest {
-        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
-    }
 }
 
 check.dependsOn tasks.checkstyleMain, tasks.checkstyleTest
 
 tasks.withType(Checkstyle).configureEach {
+    exclude '**/generated-sources/**'
+    exclude '**/generated/**'
     exclude '**/module-info.java'
 }
 
@@ -77,4 +76,59 @@ jacocoTestReport {
         html.required = true
         csv.required = true
     }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, exclude: [
+                            'dev/sorn/fql/generated/**'
+                    ])
+                })
+        )
+    }
+}
+
+sourceSets {
+    main {
+        antlr {
+            srcDirs = ['src/main/resources/grammar']
+        }
+        java {
+            srcDirs = [
+                    'src/main/java',
+                    "${buildDir}/generated-sources"
+            ]
+        }
+    }
+}
+
+clean {
+    delete "${buildDir}/generated-sources"
+}
+
+generateGrammarSource {
+    arguments += [
+            "-package", "dev.sorn.fql.generated.antlr",
+            "-listener",
+            "-visitor"
+    ]
+    outputDirectory = file("${buildDir}/generated-sources")
+}
+
+tasks.named('compileJava') {
+    dependsOn generateGrammarSource
+}
+
+tasks.named('sourcesJar') {
+    dependsOn generateGrammarSource
+    from sourceSets.main.allSource
+}
+
+tasks.withType(Javadoc).configureEach {
+    exclude fileTree("${buildDir}/generated-sources/**")
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+tasks.named('javadocJar') {
+    dependsOn tasks.javadoc
+    from tasks.javadoc
 }

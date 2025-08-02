@@ -6,6 +6,5 @@
     <suppress files=".*Test\.java" checks="JavadocMethod"/>
     <suppress files=".*Test\.java" checks="MagicNumber"/>
     <suppress files=".*[\\/]generated[\\/].*" checks=".*"/>
-    <suppress files=".*Parser\.java" checks="CyclomaticComplexity"/>
-    <suppress files=".*Lexer\.java" checks="MethodLength"/>
+    <suppress files=".*[\\/]generated-sources[\\/].*" checks=".*"/>
 </suppressions>
