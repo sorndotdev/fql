@@ -25,9 +25,13 @@ repositories {
 dependencies {
     antlr "org.antlr:antlr4:4.13.2"
     implementation "org.antlr:antlr4-runtime:4.13.2"
+    testImplementation 'io.cucumber:cucumber-java:7.12.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.12.0'
+    testImplementation 'io.cucumber:cucumber-core:7.12.0'
     testImplementation(platform("org.junit:junit-bom:${junitVersion}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("org.junit.platform:junit-platform-suite-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
