@@ -1,7 +1,8 @@
 grammar FQL;
 
-expression: additiveExpression EOF;
+start: expression EOF;
 
+expression: additiveExpression;
 additiveExpression: multiplicativeExpression ( (ADD | SUB) multiplicativeExpression)*;
 multiplicativeExpression: unaryExpression ( (MUL | DIV) unaryExpression)*;
 unaryExpression: (ADD | SUB) unaryExpression | primaryExpression;

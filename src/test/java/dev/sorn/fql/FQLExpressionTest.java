@@ -1,13 +1,15 @@
-package dev.sorn.fql.api;
+package dev.sorn.fql;
 
+import dev.sorn.fql.api.FQLError;
 import org.junit.jupiter.api.Test;
-import static dev.sorn.fql.api.FQLExpression.fqlExpression;
+import static dev.sorn.fql.FQLExpression.fqlExpression;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("all")
 public class FQLExpressionTest {
     @Test
     void fqlExpression_nullInput_throwsFQLError() {
