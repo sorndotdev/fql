@@ -11,6 +11,7 @@ public final class FQLResult {
     }
 
     /**
+     * Creates and returns a new instance of {@link FQLResult}.
      *
      * @return a new {@link FQLResult} instance
      */
