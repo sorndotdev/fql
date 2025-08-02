@@ -1,0 +1,80 @@
+plugins {
+    id 'java-library'
+    id 'checkstyle'
+    id 'jacoco'
+}
+
+apply plugin: dev.sorn.fql.CoveragePlugin
+
+group = 'dev.sorn.fql'
+version = projectVersion
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(platform("org.junit:junit-bom:${junitVersion}"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = "full"
+    }
+    finalizedBy jacocoTestReport
+}
+
+tasks.withType(Jar).configureEach {
+    manifest.attributes(
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': project.group
+    )
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+checkstyle {
+    toolVersion = checkstyleVersion
+    configDirectory = file("${rootDir}/config/checkstyle")
+    ignoreFailures = false
+    maxWarnings = 0
+    checkstyleMain {
+        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    }
+    checkstyleTest {
+        configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    }
+}
+
+check.dependsOn tasks.checkstyleMain, tasks.checkstyleTest
+
+tasks.withType(Checkstyle).configureEach {
+    exclude '**/module-info.java'
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = true
+    }
+}
