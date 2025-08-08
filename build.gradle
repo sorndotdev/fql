@@ -115,7 +115,7 @@ generateGrammarSource {
             "-listener",
             "-visitor"
     ]
-    outputDirectory = file("${buildDir}/generated-sources")
+    outputDirectory = file("${buildDir}/generated-sources/dev/sorn/fql/generated/antlr")
 }
 
 tasks.named('compileJava') {
