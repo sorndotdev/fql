@@ -1,7 +1,8 @@
 Feature: Valid FQL Expressions
 
   Scenario Outline: Parsing valid FQL expressions
-    When I parse the FQL expression <expression>
+    Given an expression <expression>
+    When I parse the expression
     Then no parse error should occur
     And the expression string should be <expression>
 
@@ -34,7 +35,8 @@ Feature: Valid FQL Expressions
       | "DATA(\"TICKER[123]\", \"METRIC<value>\", LATEST())"                         |
 
   Scenario Outline: Parsing invalid FQL expressions
-    When I parse the FQL expression <expression>
+    Given an expression <expression>
+    When I parse the expression
     Then an FQL error should occur
 
     Examples:

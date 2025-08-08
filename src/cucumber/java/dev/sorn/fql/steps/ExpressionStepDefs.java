@@ -1,24 +1,31 @@
 package dev.sorn.fql.steps;
 
-import dev.sorn.fql.FQLExpression;
+import dev.sorn.fql.api.Expression;
 import dev.sorn.fql.api.FQLError;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import static dev.sorn.fql.FQLExpression.fqlExpression;
+import static dev.sorn.fql.api.Expression.expression;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class FQLExpressionStepDefs {
-    private FQLExpression parsedExpression;
+public class ExpressionStepDefs {
+    private String rawExpression;
+    private Expression parsedExpression;
     private Exception parsingException;
 
-    @When("I parse the FQL expression {string}")
-    public void iParseTheExpression(String expressionString) {
+    @Given("an expression {string}")
+    public void an_expression(String expression) {
+        this.rawExpression = expression;
+    }
+
+    @When("I parse the expression")
+    public void iParseTheExpression() {
         try {
-            parsedExpression = fqlExpression(expressionString);
+            parsedExpression = expression(rawExpression);
             parsingException = null;
         } catch (Exception e) {
             parsedExpression = null;
@@ -26,11 +33,13 @@ public class FQLExpressionStepDefs {
         }
     }
 
+    @Then("an FQL error should occur")
+    public void aParseErrorShouldOccur() {
+        assertInstanceOf(FQLError.class, parsingException);
+    }
+
     @Then("no parse error should occur")
     public void noParseErrorShouldOccur() {
-        if (parsingException != null) {
-            parsingException.printStackTrace();
-        }
         assertNull(parsingException, "Expected no parse error, but got: " + parsingException);
     }
 
@@ -38,10 +47,5 @@ public class FQLExpressionStepDefs {
     public void theExpressionStringShouldBe(String expected) {
         assertNotNull(parsedExpression, "Parsed expression should not be null");
         assertEquals(expected, parsedExpression.toString());
-    }
-
-    @Then("an FQL error should occur")
-    public void aParseErrorShouldOccur() {
-        assertInstanceOf(FQLError.class, parsingException);
     }
 }

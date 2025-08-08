@@ -1,8 +1,7 @@
-package dev.sorn.fql;
+package dev.sorn.fql.api;
 
-import dev.sorn.fql.api.FQLError;
 import org.junit.jupiter.api.Test;
-import static dev.sorn.fql.FQLExpression.fqlExpression;
+import static dev.sorn.fql.api.Expression.expression;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -10,38 +9,38 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("all")
-public class FQLExpressionTest {
+public class ExpressionTest {
     @Test
-    void fqlExpression_nullInput_throwsFQLError() {
+    void expression_null_input_throws() {
         // given
         String invalid = null;
 
         // when
-        FQLError e = assertThrows(FQLError.class, () -> fqlExpression(invalid));
+        FQLError e = assertThrows(FQLError.class, () -> expression(invalid));
 
         // then
         assertEquals("invalid expression: null", e.getMessage());
     }
 
     @Test
-    void fqlExpression_blankInput_throwsFQLError() {
+    void expression_blank_input_throws() {
         // given
         String invalid = "\t \n";
 
         // when
-        FQLError e = assertThrows(FQLError.class, () -> fqlExpression(invalid));
+        FQLError e = assertThrows(FQLError.class, () -> expression(invalid));
 
         // then
         assertEquals("invalid expression: \t \n", e.getMessage());
     }
 
     @Test
-    void fqlExpression_validInput_returnsCorrectInstance() {
+    void expression_valid_input_returns_correct_instance() {
         // given
         String expression = "DATA(\"TSLA\", \"SHARE_PRICE\", LATEST())";
 
         // when
-        FQLExpression fqlExpression = fqlExpression(expression);
+        Expression fqlExpression = expression(expression);
 
         // then
         assertEquals(expression, fqlExpression.toString());
@@ -50,9 +49,9 @@ public class FQLExpressionTest {
     // ---- equals() tests ----
 
     @Test
-    void equals_sameObject_returnsTrue() {
+    void equals_same_object_returns_true() {
         // given
-        FQLExpression expr = fqlExpression("DATA(\"NFLX\", \"SUBSCRIBERS\")");
+        Expression expr = expression("DATA(\"NFLX\", \"SUBSCRIBERS\")");
 
         // when
         boolean equals = expr.equals(expr);
@@ -62,10 +61,10 @@ public class FQLExpressionTest {
     }
 
     @Test
-    void equals_sameExpression_returnsTrue() {
+    void equals_same_expression_returns_true() {
         // given
-        FQLExpression expr1 = fqlExpression("DATA(\"AAPL\", \"REVENUE\")");
-        FQLExpression expr2 = fqlExpression("DATA(\"AAPL\", \"REVENUE\")");
+        Expression expr1 = expression("DATA(\"AAPL\", \"REVENUE\")");
+        Expression expr2 = expression("DATA(\"AAPL\", \"REVENUE\")");
 
         // when
         boolean equals = expr1.equals(expr2);
@@ -75,10 +74,10 @@ public class FQLExpressionTest {
     }
 
     @Test
-    void equals_differentExpression_returnsFalse() {
+    void equals_different_expression_returns_false() {
         // given
-        FQLExpression expr1 = fqlExpression("DATA(\"AAPL\", \"REVENUE\")");
-        FQLExpression expr2 = fqlExpression("DATA(\"TSLA\", \"REVENUE\")");
+        Expression expr1 = expression("DATA(\"AAPL\", \"REVENUE\")");
+        Expression expr2 = expression("DATA(\"TSLA\", \"REVENUE\")");
 
         // when
         boolean equals = expr1.equals(expr2);
@@ -88,9 +87,9 @@ public class FQLExpressionTest {
     }
 
     @Test
-    void equals_differentType_returnsFalse() {
+    void equals_different_type_returns_false() {
         // given
-        FQLExpression expr = fqlExpression("DATA(\"AAPL\", \"REVENUE\")");
+        Expression expr = expression("DATA(\"AAPL\", \"REVENUE\")");
 
         // when
         boolean equals = expr.equals("not an FQLExpression");
@@ -100,9 +99,9 @@ public class FQLExpressionTest {
     }
 
     @Test
-    void equals_null_returnsFalse() {
+    void equals_null_returns_false() {
         // given
-        FQLExpression expr = fqlExpression("DATA(\"AAPL\", \"REVENUE\")");
+        Expression expr = expression("DATA(\"AAPL\", \"REVENUE\")");
 
         // when
         boolean equals = expr.equals(null);
@@ -114,10 +113,10 @@ public class FQLExpressionTest {
     // ---- hashCode() tests ----
 
     @Test
-    void hashCode_sameExpression_returnsSameHash() {
+    void hashCode_same_expression_returns_same_hash() {
         // given
-        FQLExpression expr1 = fqlExpression("DATA(\"GOOG\", \"EPS\")");
-        FQLExpression expr2 = fqlExpression("DATA(\"GOOG\", \"EPS\")");
+        Expression expr1 = expression("DATA(\"GOOG\", \"EPS\")");
+        Expression expr2 = expression("DATA(\"GOOG\", \"EPS\")");
 
         // when
         int hash1 = expr1.hashCode();
@@ -128,10 +127,10 @@ public class FQLExpressionTest {
     }
 
     @Test
-    void hashCode_differentExpression_returnsDifferentHash() {
+    void hashCode_different_expression_returns_different_hash() {
         // given
-        FQLExpression expr1 = fqlExpression("DATA(\"META\", \"REVENUE\")");
-        FQLExpression expr2 = fqlExpression("DATA(\"META\", \"NET_INCOME\")");
+        Expression expr1 = expression("DATA(\"META\", \"REVENUE\")");
+        Expression expr2 = expression("DATA(\"META\", \"NET_INCOME\")");
 
         // when
         int hash1 = expr1.hashCode();

@@ -1,6 +1,5 @@
-package dev.sorn.fql;
+package dev.sorn.fql.api;
 
-import dev.sorn.fql.api.FQLError;
 import dev.sorn.fql.generated.antlr.FQLLexer;
 import dev.sorn.fql.generated.antlr.FQLParser;
 import org.antlr.v4.runtime.BailErrorStrategy;
@@ -13,21 +12,21 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
  *
  * @author Sorn
  */
-public final class FQLExpression {
+public final class Expression {
     private final String value;
 
-    private FQLExpression(String value) {
+    private Expression(String value) {
         this.value = value;
     }
 
     /**
-     * Creates and returns a new instance of {@link FQLExpression}.
+     * Creates and returns a new instance of {@link Expression}.
      *
      * @param expression the raw FQL expression string
-     * @return a new {@link FQLExpression} instance
+     * @return a new {@link Expression} instance
      * @throws FQLError if {@code expression} is invalid
      */
-    public static FQLExpression fqlExpression(String expression) throws FQLError {
+    public static Expression expression(String expression) throws FQLError {
         if (expression == null || expression.isBlank()) {
             throw new FQLError("invalid expression: %s", expression);
         }
@@ -41,7 +40,7 @@ public final class FQLExpression {
         } catch (ParseCancellationException e) {
             throw new FQLError("invalid expression: %s", expression, e);
         }
-        return new FQLExpression(expression);
+        return new Expression(expression);
     }
 
     @Override
@@ -57,7 +56,7 @@ public final class FQLExpression {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof FQLExpression that)) {
+        if (!(obj instanceof Expression that)) {
             return false;
         }
         return value.equals(that.value);

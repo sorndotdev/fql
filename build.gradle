@@ -36,12 +36,54 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+sourceSets {
+    main {
+        antlr {
+            srcDirs = ['src/main/resources/grammar']
+        }
+        java {
+            srcDirs = [
+                    'src/main/java',
+                    "${buildDir}/generated-sources"
+            ]
+        }
+    }
+    cucumber {
+        java {
+            srcDirs = ['src/cucumber/java']
+        }
+        resources {
+            srcDirs = ['src/cucumber/resources']
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    cucumberImplementation.extendsFrom testImplementation
+    cucumberRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
 test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat = "full"
     }
+}
+
+tasks.register('cucumberTest', Test) {
+    description = 'Runs Cucumber tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.cucumber.output.classesDirs
+    classpath = sourceSets.cucumber.runtimeClasspath
+    useJUnitPlatform()
+    shouldRunAfter test
+}
+
+check.dependsOn cucumberTest
+tasks.named('check') {
     finalizedBy jacocoTestReport
 }
 
@@ -75,10 +117,14 @@ jacoco {
 }
 
 jacocoTestReport {
+    dependsOn test, cucumberTest
     reports {
         xml.required = true
         html.required = true
         csv.required = true
+    }
+    executionData fileTree(layout.buildDirectory) {
+        include 'jacoco/*.exec'
     }
     afterEvaluate {
         classDirectories.setFrom(
@@ -88,20 +134,6 @@ jacocoTestReport {
                     ])
                 })
         )
-    }
-}
-
-sourceSets {
-    main {
-        antlr {
-            srcDirs = ['src/main/resources/grammar']
-        }
-        java {
-            srcDirs = [
-                    'src/main/java',
-                    "${buildDir}/generated-sources"
-            ]
-        }
     }
 }
 
