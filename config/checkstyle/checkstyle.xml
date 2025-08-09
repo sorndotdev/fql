@@ -54,7 +54,7 @@
         <module name="OneStatementPerLine"/>
         <module name="AvoidInlineConditionals"/>
         <module name="NoWhitespaceBefore">
-            <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT"/>
+            <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC"/>
         </module>
         <module name="MutableException"/>
         <module name="ArrayTrailingComma"/>

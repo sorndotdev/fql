@@ -3,6 +3,8 @@ package dev.sorn.fql;
 import dev.sorn.fql.api.FiscalPeriod;
 import java.util.Optional;
 import static dev.sorn.fql.api.FiscalPeriod.fiscalPeriod;
+import static dev.sorn.fql.api.Optionality.empty;
+import static dev.sorn.fql.api.Optionality.optional;
 
 public interface FiscalPeriodTestData extends FiscalYearTestData, FiscalQuarterTestData {
     default FiscalPeriod aFiscalPeriod(String value) {
@@ -13,8 +15,8 @@ public interface FiscalPeriodTestData extends FiscalYearTestData, FiscalQuarterT
         return fiscalPeriod(
             aRandomFiscalYear(),
             Math.random() < 0.5
-                ? Optional.of(aRandomFiscalQuarter())
-                : Optional.empty()
+                ? optional(aRandomFiscalQuarter())
+                : empty()
         );
     }
 }

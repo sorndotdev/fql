@@ -8,15 +8,15 @@ import static dev.sorn.fql.api.Checks.checkMin;
 import static dev.sorn.fql.api.Checks.checkPresent;
 import static java.lang.Integer.parseInt;
 
-public class FiscalYear {
+public class FiscalYear implements Comparable<FiscalYear>, ValueObject<Integer> {
     protected static final Pattern PATTERN = Pattern.compile("(\\d{4})");
-    protected static final int MIN_YEAR = 1000;
-    protected static final int MAX_YEAR = 9999;
+    protected static final int MIN_VALUE = 1000;
+    protected static final int MAX_VALUE = 9999;
     protected final int value;
 
     protected FiscalYear(int value) {
-        checkMin("fiscalYear.value", MIN_YEAR, value);
-        checkMax("fiscalYear.value", MAX_YEAR, value);
+        checkMin("fiscalYear.value", MIN_VALUE, value);
+        checkMax("fiscalYear.value", MAX_VALUE, value);
         this.value = value;
     }
 
@@ -30,6 +30,7 @@ public class FiscalYear {
         return fiscalYear(parseInt(value));
     }
 
+    @Override
     public Integer value() {
         return value;
     }
@@ -51,5 +52,10 @@ public class FiscalYear {
     @Override
     public String toString() {
         return Integer.toString(value);
+    }
+
+    @Override
+    public int compareTo(FiscalYear that) {
+        return Integer.compare(this.value, that.value);
     }
 }
