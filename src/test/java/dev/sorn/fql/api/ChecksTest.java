@@ -3,12 +3,14 @@ package dev.sorn.fql.api;
 
 import java.lang.reflect.Constructor;
 import java.util.function.BiFunction;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.function.TriFunction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
+import static dev.sorn.fql.api.Checks.checkPattern;
 import static java.lang.reflect.Modifier.isPrivate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -99,6 +101,46 @@ public class ChecksTest {
         // then
         var e = assertThrows(FQLError.class, () -> f.apply(name, max, v));
         assertEquals("'<TEST>' is above max: 1001 > 1000", e.getMessage());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "aa",
+        "aaa",
+        "aba",
+        "bab",
+        "abba",
+        "abbba",
+        "babab",
+    })
+    void checkMatches_matches(String value) {
+        // given
+        Pattern pattern = Pattern.compile("^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$");
+
+        // when
+        String s = checkPattern("palindrome", pattern, value);
+
+        // then
+        assertEquals(value, s);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "aab",
+        "baa",
+        "abc",
+        "123",
+        "a-b-a",
+    })
+    void checkMatches_throws(String value) {
+        // given
+        Pattern pattern = Pattern.compile("^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$");
+
+        // when
+        TriFunction<String, Pattern, String, String> f = Checks::checkPattern;
+
+        // then
+        assertThrows(FQLError.class, () -> f.apply("palindrome", pattern, value));
     }
 
     @Test
