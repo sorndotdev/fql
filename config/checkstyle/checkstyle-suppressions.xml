@@ -11,6 +11,8 @@
     <suppress files=".*[\\/]generated-sources[\\/].*" checks=".*"/>
 
     <!-- specific -->
+    <suppress files="DataPoint.java" checks="NeedBraces"/> <!-- reason: equals() -->
+    <suppress files="DataPoint.java" checks="NPathComplexity"/> <!-- reason: equals() -->
     <suppress files="FiscalYear.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalQuarter.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalPeriod.java" checks="NeedBraces"/> <!-- reason: equals() -->
