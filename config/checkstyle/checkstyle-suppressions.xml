@@ -13,11 +13,15 @@
     <!-- specific -->
     <suppress files="DataPoint.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="DataPoint.java" checks="NPathComplexity"/> <!-- reason: equals() -->
+    <suppress files="DataPointQuery.java" checks="NeedBraces"/> <!-- reason: equals() -->
+    <suppress files="DataPointQuery.java" checks="NPathComplexity"/> <!-- reason: equals() -->
     <suppress files="FiscalYear.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalQuarter.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalPeriod.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalPeriod.java" checks="MagicNumber"/> <!-- reason: hashCode() -->
     <suppress files="FiscalPeriodRange.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalPeriodRange.java" checks="MagicNumber"/> <!-- reason: hashCode() -->
+    <suppress files="FiscalPeriodRange.java" checks="AvoidInlineConditionals"/> <!-- reason: constructor(String) -->
     <suppress files="Optionality.java" checks="NeedBraces"/> <!-- reason: optionalComparator() -->
+    <suppress files="ValueObject.java" checks="MethodName"/> <!-- reason: _toString() -->
 </suppressions>

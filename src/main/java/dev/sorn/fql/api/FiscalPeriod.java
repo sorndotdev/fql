@@ -11,7 +11,7 @@ import static dev.sorn.fql.api.Optionality.optionalComparator;
 import static java.lang.Integer.parseInt;
 import static java.util.Optional.empty;
 
-public class FiscalPeriod implements Comparable<FiscalPeriod> {
+public class FiscalPeriod implements Comparable<FiscalPeriod>, ValueObject<String> {
     protected static final Pattern YEAR_PATTERN = FiscalYear.PATTERN;
     protected static final Pattern YEAR_QUARTER_PATTERN = Pattern.compile(FiscalYear.PATTERN.pattern() + FiscalQuarter.PATTERN.pattern());
     protected final FiscalYear year;
@@ -64,6 +64,13 @@ public class FiscalPeriod implements Comparable<FiscalPeriod> {
     }
 
     @Override
+    public String value() {
+        return quarter
+            .map(fiscalQuarter -> String.format("%sQ%1d", year, fiscalQuarter.value()))
+            .orElseGet(year::toString);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
@@ -82,9 +89,7 @@ public class FiscalPeriod implements Comparable<FiscalPeriod> {
 
     @Override
     public String toString() {
-        return quarter
-            .map(fiscalQuarter -> String.format("%sQ%1d", year, fiscalQuarter.value()))
-            .orElseGet(year::toString);
+        return value();
     }
 
     @Override

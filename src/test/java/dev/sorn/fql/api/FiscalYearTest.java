@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FiscalYearTest implements FiscalYearTestData {
+class FiscalYearTest implements FiscalYearTestData {
     @ParameterizedTest
     @ValueSource(strings = {"1000", "1999", "2028", "9999"})
     void fiscalYear_valid_string(String value) {

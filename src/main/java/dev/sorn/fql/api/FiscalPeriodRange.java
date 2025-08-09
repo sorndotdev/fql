@@ -3,8 +3,13 @@ package dev.sorn.fql.api;
 import java.util.Objects;
 import java.util.Optional;
 import static dev.sorn.fql.api.Checks.checkNotNull;
+import static dev.sorn.fql.api.FiscalPeriod.fiscalPeriod;
+import static dev.sorn.fql.api.Optionality.empty;
+import static dev.sorn.fql.api.Optionality.optional;
 
-public class FiscalPeriodRange {
+public class FiscalPeriodRange implements ValueObject<String> {
+    public static final String SEPARATOR = "-";
+    public static final FiscalPeriodRange EMPTY_FISCAL_PERIOD_RANGE = new FiscalPeriodRange(empty(), empty());
     protected Optional<FiscalPeriod> startInclusive;
     protected Optional<FiscalPeriod> endInclusive;
 
@@ -20,6 +25,16 @@ public class FiscalPeriodRange {
         this.endInclusive = endInclusive;
     }
 
+    public static FiscalPeriodRange fiscalPeriodRange(String value) {
+        String[] parts = value.split(SEPARATOR, -1); // keep trailing empty parts
+        String start = parts.length > 0 ? parts[0].trim() : "";
+        String end = parts.length > 1 ? parts[1].trim() : "";
+        return fiscalPeriodRange(
+            start.isEmpty() ? empty() : optional(fiscalPeriod(start)),
+            end.isEmpty() ? empty() : optional(fiscalPeriod(end))
+        );
+    }
+
     public static FiscalPeriodRange fiscalPeriodRange(Optional<FiscalPeriod> startInclusive, Optional<FiscalPeriod> endInclusive) {
         return new FiscalPeriodRange(startInclusive, endInclusive);
     }
@@ -30,6 +45,20 @@ public class FiscalPeriodRange {
 
     public Optional<FiscalPeriod> endInclusive() {
         return endInclusive;
+    }
+
+    @Override
+    public String value() {
+        if (startInclusive.isPresent() && endInclusive.isPresent()) {
+            return startInclusive.get() + SEPARATOR + endInclusive.get();
+        }
+        if (startInclusive.isPresent()) {
+            return startInclusive.get() + SEPARATOR;
+        }
+        if (endInclusive.isPresent()) {
+            return SEPARATOR + endInclusive.get();
+        }
+        return SEPARATOR;
     }
 
     @Override
@@ -51,15 +80,6 @@ public class FiscalPeriodRange {
 
     @Override
     public String toString() {
-        if (startInclusive.isPresent() && endInclusive.isPresent()) {
-            return startInclusive.get() + "-" + endInclusive.get();
-        }
-        if (startInclusive.isPresent()) {
-            return startInclusive.get() + "-";
-        }
-        if (endInclusive.isPresent()) {
-            return "-" + endInclusive.get();
-        }
-        return "-";
+        return value();
     }
 }

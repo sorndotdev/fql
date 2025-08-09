@@ -46,4 +46,38 @@ class ValueObjectTest {
         TypeVariable<?>[] typeParameters = ValueObject.class.getTypeParameters();
         assertEquals(1, typeParameters.length, "ValueObject should have exactly one type parameter");
     }
+
+    @Test
+    void toString_returns_value_when_no_override() {
+        // given
+        ValueObject<String> vo = () -> "ABC";
+
+        // when
+        String result = vo._toString();
+
+        // then
+        assertEquals("ABC", result);
+    }
+
+    @Test
+    void toString_can_be_overridden() {
+        // given
+        ValueObject<String> vo = new ValueObject<>() {
+            @Override
+            public String value() {
+                return "XYZ";
+            }
+
+            @Override
+            public String toString() {
+                return "<CUSTOM>";
+            }
+        };
+
+        // when
+        String result = vo._toString();
+
+        // then
+        assertEquals("<CUSTOM>", result);
+    }
 }

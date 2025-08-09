@@ -12,22 +12,14 @@ public class DataPoint<T extends Comparable<T>> {
     protected final Source source;
     protected final T value;
 
-    protected DataPoint(
-        Instrument instrument,
-        Metric metric,
-        FiscalPeriod fiscalPeriod,
-        Unit unit,
-        Scale scale,
-        Source source,
-        T value
-    ) {
-        this.instrument = checkNotNull("dataPoint.instrument", instrument);
-        this.metric = checkNotNull("dataPoint.metric", metric);
-        this.fiscalPeriod = checkNotNull("dataPoint.fiscalPeriod", fiscalPeriod);
-        this.unit = checkNotNull("dataPoint.unit", unit);
-        this.scale = checkNotNull("dataPoint.scale", scale);
-        this.source = checkNotNull("dataPoint.source", source);
-        this.value = checkNotNull("dataPoint.value", value);
+    protected DataPoint(DataPoint.Builder<T> builder) {
+        this.instrument = checkNotNull("dataPoint.instrument", builder.instrument);
+        this.metric = checkNotNull("dataPoint.metric", builder.metric);
+        this.fiscalPeriod = checkNotNull("dataPoint.fiscalPeriod", builder.fiscalPeriod);
+        this.unit = checkNotNull("dataPoint.unit", builder.unit);
+        this.scale = checkNotNull("dataPoint.scale", builder.scale);
+        this.source = checkNotNull("dataPoint.source", builder.source);
+        this.value = checkNotNull("dataPoint.value", builder.value);
     }
 
     public final Instrument instrument() {
@@ -81,43 +73,28 @@ public class DataPoint<T extends Comparable<T>> {
     @SuppressWarnings("all")
     @Override
     protected DataPoint<T> clone() {
-        return new DataPoint<>(
-            instrument,
-            metric,
-            fiscalPeriod,
-            unit,
-            scale,
-            source,
-            value
-        );
+        return new DataPoint<T>(DataPoint.Builder.<T>dataPoint()
+            .instrument(instrument)
+            .metric(metric)
+            .fiscalPeriod(fiscalPeriod)
+            .unit(unit)
+            .scale(scale)
+            .source(source)
+            .value(value));
     }
 
     @Override
     public String toString() {
         return String.format(
             "DataPoint[instrument=%s, metric=%s, fiscalPeriod=%s, unit=%s, scale=%s, source=%s, value=%s]",
-            safeToString(instrument),
-            safeToString(metric),
-            safeToString(fiscalPeriod),
-            safeToString(unit),
-            safeToString(scale),
-            safeToString(source),
+            instrument._toString(),
+            metric._toString(),
+            fiscalPeriod._toString(),
+            unit._toString(),
+            scale._toString(),
+            source._toString(),
             value
         );
-    }
-
-    private static String safeToString(Object obj) {
-        String str = obj.toString();
-        // crude heuristic: if toString() looks like default Object toString() (class@hashcode)
-        if (str.matches(".*@\\p{XDigit}+$")) {
-            // fallback to value() if available via an interface, else return str
-            if (obj instanceof Instrument i) return i.value();
-            if (obj instanceof Metric m) return m.value();
-            if (obj instanceof Unit u) return u.value();
-            if (obj instanceof Scale s) return "" + s.value();
-            if (obj instanceof Source so) return so.value();
-        }
-        return str;
     }
 
     public static class Builder<T extends Comparable<T>> {
@@ -169,7 +146,7 @@ public class DataPoint<T extends Comparable<T>> {
         }
 
         public DataPoint<T> build() {
-            return new DataPoint<>(instrument, metric, fiscalPeriod, unit, scale, source, value);
+            return new DataPoint<>(this);
         }
     }
 }
