@@ -36,10 +36,10 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "1999-Q1",
-        "1999-Q2",
-        "1999-Q3",
-        "1999-Q4",
+        "1999Q1",
+        "1999Q2",
+        "1999Q3",
+        "1999Q4",
     })
     void fiscalPeriod_from_valid_year_quarter_string(String value) {
         // given
@@ -48,8 +48,8 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
         Function<String, FiscalPeriod> f = FiscalPeriod::fiscalPeriod;
 
         // then
-        Integer year = parseInt(value.split("-")[0]);
-        Integer quarter = parseInt(value.split("-")[1].substring(1));
+        Integer year = parseInt(value.substring(0, 4));
+        Integer quarter = parseInt(value.substring(5));
         FiscalPeriod period = assertDoesNotThrow(() -> f.apply(value));
         assertTrue(period.fiscalQuarter().isPresent());
         assertEquals(year, period.fiscalYear().value());
@@ -62,10 +62,10 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
         "abc",
         "999",
         "202-01",
-        "1999-Q0",
-        "1999-Q5",
-        "1999-Q44",
-        "-1999-Q1",
+        "1999Q0",
+        "1999Q5",
+        "1999Q44",
+        "-1999Q1",
         "1999-Q1-",
     })
     void fiscalPeriod_from_invalid_string_throws(String value) {
@@ -81,7 +81,7 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void equals_same_true() {
         // given
-        FiscalPeriod fp1 = aFiscalPeriod("1999-Q4");
+        FiscalPeriod fp1 = aFiscalPeriod("1999Q4");
 
         // when
         boolean equal = fp1.equals(fp1);
@@ -93,8 +93,8 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void equals_identical_true() {
         // given
-        FiscalPeriod fp1 = aFiscalPeriod("1999-Q4");
-        FiscalPeriod fp2 = aFiscalPeriod("1999-Q4");
+        FiscalPeriod fp1 = aFiscalPeriod("1999Q4");
+        FiscalPeriod fp2 = aFiscalPeriod("1999Q4");
 
         // when
         boolean equal = fp1.equals(fp2);
@@ -106,8 +106,8 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void equals_different_value_false() {
         // given
-        FiscalPeriod fp1 = aFiscalPeriod("1999-Q4");
-        FiscalPeriod fp2 = aFiscalPeriod("1999-Q3");
+        FiscalPeriod fp1 = aFiscalPeriod("1999Q4");
+        FiscalPeriod fp2 = aFiscalPeriod("1999Q3");
 
         // when
         boolean equal = fp1.equals(fp2);
@@ -157,19 +157,19 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void toString_year_quarter() {
         // given
-        FiscalPeriod fp1 = aFiscalPeriod("1999-Q4");
+        FiscalPeriod fp1 = aFiscalPeriod("1999Q4");
 
         // when
         String string = fp1.toString();
 
         // then
-        assertEquals("1999-Q4", string);
+        assertEquals("1999Q4", string);
     }
 
     @Test
     void hashCode_magicNumber() {
         // given
-        FiscalPeriod fp = aFiscalPeriod("1999-Q2");
+        FiscalPeriod fp = aFiscalPeriod("1999Q2");
 
         // when
         int actualHash = fp.hashCode();
@@ -195,8 +195,8 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void compareTo_equal_year_quarter_periods_returns_zero() {
         // given
-        FiscalPeriod fp1 = aFiscalPeriod("1999-Q4");
-        FiscalPeriod fp2 = aFiscalPeriod("1999-Q4");
+        FiscalPeriod fp1 = aFiscalPeriod("1999Q4");
+        FiscalPeriod fp2 = aFiscalPeriod("1999Q4");
 
         // when
         int comparison = fp1.compareTo(fp2);
@@ -221,8 +221,8 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void compareTo_earlier_year_quarter_returns_negative() {
         // given
-        FiscalPeriod earlier = aFiscalPeriod("1999-Q3");
-        FiscalPeriod later = aFiscalPeriod("1999-Q4");
+        FiscalPeriod earlier = aFiscalPeriod("1999Q3");
+        FiscalPeriod later = aFiscalPeriod("1999Q4");
 
         // when
         int comparison = earlier.compareTo(later);
@@ -247,8 +247,8 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     @Test
     void compareTo_later_year_quarter_returns_positive() {
         // given
-        FiscalPeriod earlier = aFiscalPeriod("1999-Q3");
-        FiscalPeriod later = aFiscalPeriod("1999-Q4");
+        FiscalPeriod earlier = aFiscalPeriod("1999Q3");
+        FiscalPeriod later = aFiscalPeriod("1999Q4");
 
         // when
         int comparison = later.compareTo(earlier);
@@ -261,7 +261,7 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
     void compareTo_year_only_vs_year_quarter_returns_zero() {
         // given
         FiscalPeriod yearOnly = aFiscalPeriod("1999");
-        FiscalPeriod yearQuarter = aFiscalPeriod("1999-Q1");
+        FiscalPeriod yearQuarter = aFiscalPeriod("1999Q1");
 
         // when
         int comparison = yearOnly.compareTo(yearQuarter);

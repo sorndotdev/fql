@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChecksTest {
     @Test
-    void checkPresent_returns_object() {
+    void checkNotNull_returns_object() {
         // given
         String name = "<TEST>";
         Object o1 = new Object();
 
         // when
-        BiFunction<String, Object, Object> f = Checks::checkPresent;
+        BiFunction<String, Object, Object> f = Checks::checkNotNull;
 
         // then
         Object o2 = f.apply(name, o1);
@@ -32,13 +32,13 @@ public class ChecksTest {
     }
 
     @Test
-    void checkPresent_null_throws() {
+    void checkNotNull_null_throws() {
         // given
         String name = "<TEST>";
         Object o = null;
 
         // when
-        BiFunction<String, Object, Object> f = Checks::checkPresent;
+        BiFunction<String, Object, Object> f = Checks::checkNotNull;
 
         // then
         var e = assertThrows(FQLError.class, () -> f.apply(name, o));

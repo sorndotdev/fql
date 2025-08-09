@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static dev.sorn.fql.api.Checks.checkPresent;
+import static dev.sorn.fql.api.Checks.checkNotNull;
 import static dev.sorn.fql.api.Optionality.optional;
 import static dev.sorn.fql.api.Optionality.optionalComparator;
 import static java.lang.Integer.parseInt;
@@ -13,19 +13,19 @@ import static java.util.Optional.empty;
 
 public class FiscalPeriod implements Comparable<FiscalPeriod> {
     protected static final Pattern YEAR_PATTERN = FiscalYear.PATTERN;
-    protected static final Pattern YEAR_QUARTER_PATTERN = Pattern.compile(FiscalYear.PATTERN.pattern() + "-" + FiscalQuarter.PATTERN.pattern());
+    protected static final Pattern YEAR_QUARTER_PATTERN = Pattern.compile(FiscalYear.PATTERN.pattern() + FiscalQuarter.PATTERN.pattern());
     protected final FiscalYear year;
     protected final Optional<FiscalQuarter> quarter;
 
     protected FiscalPeriod(FiscalYear year, Optional<FiscalQuarter> quarter) {
-        checkPresent("fiscalPeriod.year", year);
-        checkPresent("fiscalPeriod.quarter", quarter);
+        checkNotNull("fiscalPeriod.year", year);
+        checkNotNull("fiscalPeriod.quarter", quarter);
         this.year = year;
         this.quarter = quarter;
     }
 
     public static FiscalPeriod fiscalPeriod(String value) throws FQLError {
-        checkPresent("fiscalPeriod.value", value);
+        checkNotNull("fiscalPeriod.value", value);
         Matcher m;
 
         m = YEAR_PATTERN.matcher(value);
@@ -83,7 +83,7 @@ public class FiscalPeriod implements Comparable<FiscalPeriod> {
     @Override
     public String toString() {
         return quarter
-            .map(fiscalQuarter -> String.format("%s-Q%1d", year, fiscalQuarter.value()))
+            .map(fiscalQuarter -> String.format("%sQ%1d", year, fiscalQuarter.value()))
             .orElseGet(year::toString);
     }
 

@@ -17,5 +17,7 @@
     <suppress files="FiscalQuarter.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalPeriod.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalPeriod.java" checks="MagicNumber"/> <!-- reason: hashCode() -->
+    <suppress files="FiscalPeriodRange.java" checks="NeedBraces"/> <!-- reason: equals() -->
+    <suppress files="FiscalPeriodRange.java" checks="MagicNumber"/> <!-- reason: hashCode() -->
     <suppress files="Optionality.java" checks="NeedBraces"/> <!-- reason: optionalComparator() -->
 </suppressions>

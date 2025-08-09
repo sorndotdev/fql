@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import static dev.sorn.fql.api.Checks.checkMatches;
 import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
-import static dev.sorn.fql.api.Checks.checkPresent;
+import static dev.sorn.fql.api.Checks.checkNotNull;
 import static java.lang.Integer.parseInt;
 
 public class FiscalQuarter implements Comparable<FiscalQuarter>, ValueObject<Integer> {
@@ -25,7 +25,7 @@ public class FiscalQuarter implements Comparable<FiscalQuarter>, ValueObject<Int
     }
 
     public static FiscalQuarter fiscalQuarter(String value) {
-        checkPresent("fiscalQuarter.value", value);
+        checkNotNull("fiscalQuarter.value", value);
         checkMatches("fiscalQuarter.value", PATTERN, value);
         return fiscalQuarter(parseInt(value.substring(1)));
     }

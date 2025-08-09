@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import static dev.sorn.fql.api.Checks.checkMatches;
 import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
-import static dev.sorn.fql.api.Checks.checkPresent;
+import static dev.sorn.fql.api.Checks.checkNotNull;
 import static java.lang.Integer.parseInt;
 
 public class FiscalYear implements Comparable<FiscalYear>, ValueObject<Integer> {
@@ -25,7 +25,7 @@ public class FiscalYear implements Comparable<FiscalYear>, ValueObject<Integer> 
     }
 
     public static FiscalYear fiscalYear(String value) {
-        checkPresent("fiscalYear.value", value);
+        checkNotNull("fiscalYear.value", value);
         checkMatches("fiscalYear.value", PATTERN, value);
         return fiscalYear(parseInt(value));
     }

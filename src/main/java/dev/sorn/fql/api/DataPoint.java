@@ -1,7 +1,7 @@
 package dev.sorn.fql.api;
 
 import java.util.Objects;
-import static dev.sorn.fql.api.Checks.checkPresent;
+import static dev.sorn.fql.api.Checks.checkNotNull;
 
 public class DataPoint<T extends Comparable<T>> {
     protected final Instrument instrument;
@@ -21,13 +21,13 @@ public class DataPoint<T extends Comparable<T>> {
         Source source,
         T value
     ) {
-        this.instrument = checkPresent("dataPoint.instrument", instrument);
-        this.metric = checkPresent("dataPoint.metric", metric);
-        this.fiscalPeriod = checkPresent("dataPoint.fiscalPeriod", fiscalPeriod);
-        this.unit = checkPresent("dataPoint.unit", unit);
-        this.scale = checkPresent("dataPoint.scale", scale);
-        this.source = checkPresent("dataPoint.source", source);
-        this.value = checkPresent("dataPoint.value", value);
+        this.instrument = checkNotNull("dataPoint.instrument", instrument);
+        this.metric = checkNotNull("dataPoint.metric", metric);
+        this.fiscalPeriod = checkNotNull("dataPoint.fiscalPeriod", fiscalPeriod);
+        this.unit = checkNotNull("dataPoint.unit", unit);
+        this.scale = checkNotNull("dataPoint.scale", scale);
+        this.source = checkNotNull("dataPoint.source", source);
+        this.value = checkNotNull("dataPoint.value", value);
     }
 
     public final Instrument instrument() {

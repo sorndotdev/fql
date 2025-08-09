@@ -22,7 +22,7 @@ class DataPointTest implements DataPointTestData {
         // given
         Instrument instrument = instrument("AAPL");
         Metric metric = metric("REVENUE");
-        FiscalPeriod fiscalPeriod = fiscalPeriod("2024-Q4");
+        FiscalPeriod fiscalPeriod = fiscalPeriod("2024Q4");
         Unit unit = unit("USD");
         Scale scale = scale(1_000_000);
         Source source = source("SEEKING_ALPHA");
@@ -470,7 +470,7 @@ class DataPointTest implements DataPointTestData {
         // given
         Instrument instrument = instrument("AAPL");
         Metric metric = metric("REVENUE");
-        FiscalPeriod fiscalPeriod = fiscalPeriod("2024-Q4");
+        FiscalPeriod fiscalPeriod = fiscalPeriod("2024Q4");
         Unit unit = unit("USD");
         Scale scale = scale(1_000_000);
         Source source = source("SEEKING_ALPHA");
@@ -488,7 +488,7 @@ class DataPointTest implements DataPointTestData {
             .build();
 
         // then
-        assertEquals("DataPoint[instrument=AAPL, metric=REVENUE, fiscalPeriod=2024-Q4, unit=USD, scale=1000000, source=SEEKING_ALPHA, value=124300]", dp.toString(), "bad string representation: " + dp);
+        assertEquals("DataPoint[instrument=AAPL, metric=REVENUE, fiscalPeriod=2024Q4, unit=USD, scale=1000000, source=SEEKING_ALPHA, value=124300]", dp.toString(), "bad string representation: " + dp);
     }
 
     @Test
@@ -516,7 +516,7 @@ class DataPointTest implements DataPointTestData {
                 return "_REV";
             }
         };
-        FiscalPeriod fiscalPeriod = fiscalPeriod("2024-Q4");
+        FiscalPeriod fiscalPeriod = fiscalPeriod("2024Q4");
         Unit unit = new Unit() {
             @Override
             public String value() {
@@ -564,7 +564,7 @@ class DataPointTest implements DataPointTestData {
             .build();
 
         // then
-        String expected = "DataPoint[instrument=_AAPL, metric=_REV, fiscalPeriod=2024-Q4, unit=_USD, scale=_MILLIONS, source=_SA, value=124300]";
+        String expected = "DataPoint[instrument=_AAPL, metric=_REV, fiscalPeriod=2024Q4, unit=_USD, scale=_MILLIONS, source=_SA, value=124300]";
         assertEquals(expected, dp.toString(), "toString() should respect interface overrides");
     }
 

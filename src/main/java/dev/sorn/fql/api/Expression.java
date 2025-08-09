@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
-import static dev.sorn.fql.api.Checks.checkPresent;
+import static dev.sorn.fql.api.Checks.checkNotNull;
 
 /**
  * Value object representing an FQL expression.
@@ -28,7 +28,7 @@ public final class Expression {
      * @throws FQLError if {@code expression} is invalid
      */
     public static Expression expression(String expression) throws FQLError {
-        checkPresent("expression", expression);
+        checkNotNull("expression", expression);
         try {
             FQLLexer lexer = new FQLLexer(CharStreams.fromString(expression));
             CommonTokenStream tokens = new CommonTokenStream(lexer);

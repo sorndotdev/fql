@@ -11,7 +11,7 @@ public final class Checks {
         // prevent direct instantiation
     }
 
-    public static <T> T checkPresent(String name, T value) {
+    public static <T> T checkNotNull(String name, T value) {
         if (value == null) {
             throw new FQLError("'%s' is required", name);
         }
