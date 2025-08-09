@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InstrumentTest implements InstrumentTestData {
+class InstrumentTest implements InstrumentTestData {
     @Test
     void instrument_value() {
         Instrument instrument = instrument("AAPL");
@@ -21,14 +21,14 @@ public class InstrumentTest implements InstrumentTestData {
     }
 
     @Test
-    void functional_interface_annotation() {
-        boolean isAnnotated = Instrument.class.isAnnotationPresent(FunctionalInterface.class);
-        assertTrue(isAnnotated, "Instrument should be annotated with @FunctionalInterface");
+    void instrument_is_interface() {
+        assertTrue(Instrument.class.isInterface(), "Instrument should be an interface");
     }
 
     @Test
-    void is_interface() {
-        assertTrue(Instrument.class.isInterface(), "Instrument should be an interface");
+    void instrument_functional_interface_annotation() {
+        boolean isAnnotated = Instrument.class.isAnnotationPresent(FunctionalInterface.class);
+        assertTrue(isAnnotated, "Instrument should be annotated with @FunctionalInterface");
     }
 
     @Test
