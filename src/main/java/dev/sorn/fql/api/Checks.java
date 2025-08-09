@@ -1,0 +1,32 @@
+package dev.sorn.fql.api;
+
+
+/**
+ * @author Sorn
+ */
+public final class Checks {
+    private Checks() {
+        // prevent direct instantiation
+    }
+
+    public static <T> T checkPresent(String name, T value) {
+        if (value == null) {
+            throw new FQLError("'%s' is required", name);
+        }
+        return value;
+    }
+
+    public static int checkMin(String name, int min, int value) {
+        if (value < min) {
+            throw new FQLError("'%s' is below min: %d < %d", name, value, min);
+        }
+        return value;
+    }
+
+    public static int checkMax(String name, int max, int value) {
+        if (value > max) {
+            throw new FQLError("'%s' is above max: %d > %d", name, value, max);
+        }
+        return value;
+    }
+}
