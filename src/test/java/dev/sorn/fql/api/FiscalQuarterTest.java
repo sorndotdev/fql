@@ -103,7 +103,7 @@ class FiscalQuarterTest implements FiscalQuarterTestData {
     }
 
     @Test
-    void equals_different_false() {
+    void equals_different_value_false() {
         // given
         FiscalQuarter fq1 = aFiscalQuarter(4);
         FiscalQuarter fq2 = aFiscalQuarter(1);
@@ -156,7 +156,7 @@ class FiscalQuarterTest implements FiscalQuarterTestData {
     @Test
     void hashCode_is_int_value() {
         // given
-        FiscalQuarter fq = aFiscalQuarter();
+        FiscalQuarter fq = aRandomFiscalQuarter();
 
         // when
         int hashCode = fq.hashCode();

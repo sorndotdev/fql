@@ -2,9 +2,9 @@ package dev.sorn.fql.api;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
+import static dev.sorn.fql.api.Checks.checkMatches;
 import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
-import static dev.sorn.fql.api.Checks.checkMatches;
 import static dev.sorn.fql.api.Checks.checkPresent;
 import static java.lang.Integer.parseInt;
 

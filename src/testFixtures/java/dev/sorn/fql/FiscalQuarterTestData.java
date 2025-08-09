@@ -8,7 +8,7 @@ public interface FiscalQuarterTestData {
         return fiscalQuarter(value);
     }
 
-    default FiscalQuarter aFiscalQuarter() {
+    default FiscalQuarter aRandomFiscalQuarter() {
         int quarter = 1 + (int) (Math.random() * 4);
         return fiscalQuarter(quarter);
     }
