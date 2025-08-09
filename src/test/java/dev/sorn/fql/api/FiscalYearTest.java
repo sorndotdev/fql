@@ -165,4 +165,43 @@ public class FiscalYearTest implements FiscalYearTestData {
         // then
         assertEquals(hashCode, fy.value());
     }
+
+    @Test
+    void compareTo_equal_year_periods_returns_zero() {
+        // given
+        FiscalYear fq1 = aFiscalYear(1999);
+        FiscalYear fq2 = aFiscalYear(1999);
+
+        // when
+        int comparison = fq1.compareTo(fq2);
+
+        // then
+        assertEquals(0, comparison, String.format("expected: %s == %s", fq1, fq2));
+    }
+
+    @Test
+    void compareTo_earlier_year_returns_negative() {
+        // given
+        FiscalYear earlier = aFiscalYear(1999);
+        FiscalYear later = aFiscalYear(2000);
+
+        // when
+        int comparison = earlier.compareTo(later);
+
+        // then
+        assertTrue(comparison < 0, String.format("expected: %s < %s", earlier, later));
+    }
+
+    @Test
+    void compareTo_later_year_returns_positive() {
+        // given
+        FiscalYear earlier = aFiscalYear(1999);
+        FiscalYear later = aFiscalYear(2000);
+
+        // when
+        int comparison = later.compareTo(earlier);
+
+        // then
+        assertTrue(comparison > 0, String.format("expected: %s > %s", later, earlier));
+    }
 }

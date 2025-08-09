@@ -178,4 +178,95 @@ class FiscalPeriodTest implements FiscalPeriodTestData {
         int expectedHash = 61971;
         assertEquals(expectedHash, actualHash);
     }
+
+    @Test
+    void compareTo_equal_year_periods_returns_zero() {
+        // given
+        FiscalPeriod fp1 = aFiscalPeriod("1999");
+        FiscalPeriod fp2 = aFiscalPeriod("1999");
+
+        // when
+        int comparison = fp1.compareTo(fp2);
+
+        // then
+        assertEquals(0, comparison, String.format("expected: %s == %s", fp1, fp2));
+    }
+
+    @Test
+    void compareTo_equal_year_quarter_periods_returns_zero() {
+        // given
+        FiscalPeriod fp1 = aFiscalPeriod("1999-Q4");
+        FiscalPeriod fp2 = aFiscalPeriod("1999-Q4");
+
+        // when
+        int comparison = fp1.compareTo(fp2);
+
+        // then
+        assertEquals(0, comparison, String.format("expected: %s == %s", fp1, fp2));
+    }
+
+    @Test
+    void compareTo_earlier_year_returns_negative() {
+        // given
+        FiscalPeriod earlier = aFiscalPeriod("1999");
+        FiscalPeriod later = aFiscalPeriod("2000");
+
+        // when
+        int comparison = earlier.compareTo(later);
+
+        // then
+        assertTrue(comparison < 0, String.format("expected: %s < %s", earlier, later));
+    }
+
+    @Test
+    void compareTo_earlier_year_quarter_returns_negative() {
+        // given
+        FiscalPeriod earlier = aFiscalPeriod("1999-Q3");
+        FiscalPeriod later = aFiscalPeriod("1999-Q4");
+
+        // when
+        int comparison = earlier.compareTo(later);
+
+        // then
+        assertTrue(comparison < 0, String.format("expected: %s < %s", earlier, later));
+    }
+
+    @Test
+    void compareTo_later_year_returns_positive() {
+        // given
+        FiscalPeriod earlier = aFiscalPeriod("1999");
+        FiscalPeriod later = aFiscalPeriod("2000");
+
+        // when
+        int comparison = later.compareTo(earlier);
+
+        // then
+        assertTrue(comparison > 0, String.format("expected: %s > %s", later, earlier));
+    }
+
+    @Test
+    void compareTo_later_year_quarter_returns_positive() {
+        // given
+        FiscalPeriod earlier = aFiscalPeriod("1999-Q3");
+        FiscalPeriod later = aFiscalPeriod("1999-Q4");
+
+        // when
+        int comparison = later.compareTo(earlier);
+
+        // then
+        assertTrue(comparison > 0, String.format("expected: %s > %s", later, earlier));
+    }
+
+    @Test
+    void compareTo_year_only_vs_year_quarter_returns_zero() {
+        // given
+        FiscalPeriod yearOnly = aFiscalPeriod("1999");
+        FiscalPeriod yearQuarter = aFiscalPeriod("1999-Q1");
+
+        // when
+        int comparison = yearOnly.compareTo(yearQuarter);
+
+        // then
+        assertEquals(0, comparison, format("expected: %s == %s", yearOnly, yearQuarter));
+    }
 }

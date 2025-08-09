@@ -8,15 +8,15 @@ import static dev.sorn.fql.api.Checks.checkMin;
 import static dev.sorn.fql.api.Checks.checkPresent;
 import static java.lang.Integer.parseInt;
 
-public class FiscalQuarter {
+public class FiscalQuarter implements Comparable<FiscalQuarter>, ValueObject<Integer> {
     protected static final Pattern PATTERN = Pattern.compile("Q([1-4])");
-    protected static final int MIN_QUARTER = 1;
-    protected static final int MAX_QUARTER = 4;
+    protected static final int MIN_VALUE = 1;
+    protected static final int MAX_VALUE = 4;
     protected final int value;
 
     protected FiscalQuarter(int value) {
-        checkMin("fiscalQuarter.value", MIN_QUARTER, value);
-        checkMax("fiscalQuarter.value", MAX_QUARTER, value);
+        checkMin("fiscalQuarter.value", MIN_VALUE, value);
+        checkMax("fiscalQuarter.value", MAX_VALUE, value);
         this.value = value;
     }
 
@@ -30,6 +30,7 @@ public class FiscalQuarter {
         return fiscalQuarter(parseInt(value.substring(1)));
     }
 
+    @Override
     public Integer value() {
         return value;
     }
@@ -51,5 +52,10 @@ public class FiscalQuarter {
     @Override
     public String toString() {
         return "Q" + value;
+    }
+
+    @Override
+    public int compareTo(FiscalQuarter that) {
+        return Integer.compare(this.value, that.value);
     }
 }
