@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MetricTest implements MetricTestData {
+class MetricTest implements MetricTestData {
     @Test
     void metric_value() {
         Metric metric = metric("REVENUE");

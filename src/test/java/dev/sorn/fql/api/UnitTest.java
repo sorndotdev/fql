@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UnitTest implements UnitTestData {
+class UnitTest implements UnitTestData {
     @Test
     void unit_value() {
         Unit unit = unit("USD");
