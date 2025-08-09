@@ -32,7 +32,7 @@ public final class Checks {
         return value;
     }
 
-    public static String checkPattern(String name, Pattern pattern, String value) {
+    public static String checkMatches(String name, Pattern pattern, String value) {
         if (!pattern.matcher(value).matches()) {
             throw new FQLError("'%s' does not match '%s': %s", name, pattern.pattern(), value);
         }

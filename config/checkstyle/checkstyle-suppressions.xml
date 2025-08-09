@@ -12,4 +12,5 @@
 
     <!-- specific -->
     <suppress files="FiscalYear.java" checks="NeedBraces"/> <!-- reason: equals() -->
+    <suppress files="FiscalQuarter.java" checks="NeedBraces"/> <!-- reason: equals() -->
 </suppressions>

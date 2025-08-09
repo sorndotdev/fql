@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static dev.sorn.fql.api.FiscalYear.fiscalYear;
+import static java.lang.Integer.parseInt;
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,10 +21,10 @@ public class FiscalYearTest implements FiscalYearTestData {
         // given
 
         // when
-        FiscalYear year = fiscalYear(value);
+        FiscalYear fy = fiscalYear(value);
 
         // then
-        assertEquals(year.value(), year.value());
+        assertEquals(parseInt(value), fy.value());
     }
 
     @ParameterizedTest
@@ -31,10 +33,10 @@ public class FiscalYearTest implements FiscalYearTestData {
         // given
 
         // when
-        FiscalYear year = fiscalYear(value);
+        FiscalYear fy = fiscalYear(value);
 
         // then
-        assertEquals(value, year.value());
+        assertEquals(value, fy.value());
     }
 
     @ParameterizedTest
@@ -60,7 +62,7 @@ public class FiscalYearTest implements FiscalYearTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(String.format("'fiscalYear.value' is below min: %d < 1000", value), e.getMessage());
+        assertEquals(format("'fiscalYear.value' is below min: %d < 1000", value), e.getMessage());
     }
 
     @ParameterizedTest
@@ -73,7 +75,7 @@ public class FiscalYearTest implements FiscalYearTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(String.format("'fiscalYear.value' is above max: %d > 9999", value), e.getMessage());
+        assertEquals(format("'fiscalYear.value' is above max: %d > 9999", value), e.getMessage());
     }
 
     @Test
@@ -85,7 +87,7 @@ public class FiscalYearTest implements FiscalYearTestData {
         boolean equal = fy1.equals(fy1);
 
         // then
-        assertTrue(equal, String.format("expected: %s == %s", fy1, fy1));
+        assertTrue(equal, format("expected: %s == %s", fy1, fy1));
     }
 
     @Test
@@ -98,7 +100,7 @@ public class FiscalYearTest implements FiscalYearTestData {
         boolean equal = fy1.equals(fy2);
 
         // then
-        assertTrue(equal, String.format("expected: %s == %s", fy1, fy2));
+        assertTrue(equal, format("expected: %s == %s", fy1, fy2));
     }
 
     @Test
@@ -111,7 +113,7 @@ public class FiscalYearTest implements FiscalYearTestData {
         boolean equal = fy1.equals(fy2);
 
         // then
-        assertFalse(equal, String.format("expected: %s != %s", fy1, fy2));
+        assertFalse(equal, format("expected: %s != %s", fy1, fy2));
     }
 
     @Test
@@ -124,7 +126,7 @@ public class FiscalYearTest implements FiscalYearTestData {
         boolean equal = fy1.equals(fy2);
 
         // then
-        assertFalse(equal, String.format("expected: %s != %s", fy1, fy2));
+        assertFalse(equal, format("expected: %s != %s", fy1, fy2));
     }
 
     @Test
@@ -137,7 +139,19 @@ public class FiscalYearTest implements FiscalYearTestData {
         boolean equal = fy1.equals(fy2);
 
         // then
-        assertFalse(equal, String.format("expected: %s != %s", fy1, fy2));
+        assertFalse(equal, format("expected: %s != %s", fy1, fy2));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1000", "1994", "1999", "4200"})
+    void toString_returns_correct_format(String value) {
+        // given
+
+        // when
+        FiscalYear fy = fiscalYear(value);
+
+        // then
+        assertEquals(value, fy.toString(), "bad string representation: " + fy);
     }
 
     @Test

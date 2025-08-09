@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
-import static dev.sorn.fql.api.Checks.checkPattern;
+import static dev.sorn.fql.api.Checks.checkMatches;
 import static java.lang.reflect.Modifier.isPrivate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -113,12 +113,12 @@ public class ChecksTest {
         "abbba",
         "babab",
     })
-    void checkMatches_matches(String value) {
+    void checkMatches_match_returns(String value) {
         // given
         Pattern pattern = Pattern.compile("^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$");
 
         // when
-        String s = checkPattern("palindrome", pattern, value);
+        String s = checkMatches("palindrome", pattern, value);
 
         // then
         assertEquals(value, s);
@@ -132,12 +132,12 @@ public class ChecksTest {
         "123",
         "a-b-a",
     })
-    void checkMatches_throws(String value) {
+    void checkMatches_no_match_throws(String value) {
         // given
         Pattern pattern = Pattern.compile("^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$");
 
         // when
-        TriFunction<String, Pattern, String, String> f = Checks::checkPattern;
+        TriFunction<String, Pattern, String, String> f = Checks::checkMatches;
 
         // then
         assertThrows(FQLError.class, () -> f.apply("palindrome", pattern, value));
