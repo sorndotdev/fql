@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("all")
-public class ExpressionTest {
+class ExpressionTest {
     @Test
     void expression_null_input_throws() {
         // given

@@ -11,9 +11,83 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FiscalPeriodRangeTest implements FiscalPeriodRangeTestData {
+class FiscalPeriodRangeTest implements FiscalPeriodRangeTestData {
     @Test
-    void construction_with_valid_range() {
+    void fiscalPeriodRange_valid_string_both_present() {
+        // given
+        String s = "1999-2000";
+
+        // when
+        FiscalPeriodRange range = fiscalPeriodRange(s);
+
+        // then
+        assertTrue(range.startInclusive().isPresent());
+        assertTrue(range.endInclusive().isPresent());
+        assertEquals("1999", range.startInclusive().get().toString());
+        assertEquals("2000", range.endInclusive().get().toString());
+    }
+
+    @Test
+    void fiscalPeriodRange_valid_string_with_quarters_both_present() {
+        // given
+        String s = "1999Q4-2000Q1";
+
+        // when
+        FiscalPeriodRange range = fiscalPeriodRange(s);
+
+        // then
+        assertTrue(range.startInclusive().isPresent());
+        assertTrue(range.endInclusive().isPresent());
+        assertEquals("1999Q4", range.startInclusive().get().toString());
+        assertEquals("2000Q1", range.endInclusive().get().toString());
+    }
+
+    @Test
+    void fiscalPeriodRange_valid_string_with_quarters_left_present() {
+        // given
+        String s = "1999Q4-";
+
+        // when
+        FiscalPeriodRange range = fiscalPeriodRange(s);
+
+        // then
+        assertTrue(range.startInclusive().isPresent());
+        assertTrue(range.endInclusive().isEmpty());
+        assertEquals("1999Q4", range.startInclusive().get().toString());
+        assertEquals("1999Q4-", range.toString());
+    }
+
+    @Test
+    void fiscalPeriodRange_valid_string_with_quarters_right_present() {
+        // given
+        String s = "-1999Q4";
+
+        // when
+        FiscalPeriodRange range = fiscalPeriodRange(s);
+
+        // then
+        assertTrue(range.startInclusive().isEmpty());
+        assertTrue(range.endInclusive().isPresent());
+        assertEquals("1999Q4", range.endInclusive().get().toString());
+        assertEquals("-1999Q4", range.toString());
+    }
+
+    @Test
+    void fiscalPeriodRange_valid_string_empty_range() {
+        // given
+        String s = "-";
+
+        // when
+        FiscalPeriodRange range = fiscalPeriodRange(s);
+
+        // then
+        assertTrue(range.startInclusive().isEmpty());
+        assertTrue(range.endInclusive().isEmpty());
+        assertEquals("-", range.toString());
+    }
+
+    @Test
+    void fiscalPeriodRange_valid_range() {
         // given
         Optional<FiscalPeriod> start = optional(aFiscalPeriod("1999"));
         Optional<FiscalPeriod> end = optional(aFiscalPeriod("2000"));
@@ -27,7 +101,7 @@ public class FiscalPeriodRangeTest implements FiscalPeriodRangeTestData {
     }
 
     @Test
-    void construction_with_start_after_end_throws() {
+    void fiscalPeriodRange_start_after_end_throws() {
         // given
         Optional<FiscalPeriod> start = optional(aFiscalPeriod("2000"));
         Optional<FiscalPeriod> end = optional(aFiscalPeriod("1999"));

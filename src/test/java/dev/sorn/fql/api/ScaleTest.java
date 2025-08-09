@@ -1,7 +1,6 @@
 package dev.sorn.fql.api;
 
 import dev.sorn.fql.ScaleTestData;
-import io.cucumber.core.internal.com.fasterxml.jackson.core.json.WriterBasedJsonGenerator;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
