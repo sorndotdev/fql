@@ -18,16 +18,16 @@ public final class Checks {
         return value;
     }
 
-    public static int checkMin(String name, int min, int value) {
-        if (value < min) {
-            throw new FQLError("'%s' is below min: %d < %d", name, value, min);
+    public static <T extends Comparable<T>> T checkMin(String name, T min, T value) {
+        if (value.compareTo(min) < 0) {
+            throw new FQLError("'%s' is below min: %s < %s", name, value, min);
         }
         return value;
     }
 
-    public static int checkMax(String name, int max, int value) {
-        if (value > max) {
-            throw new FQLError("'%s' is above max: %d > %d", name, value, max);
+    public static <T extends Comparable<T>> T checkMax(String name, T max, T value) {
+        if (value.compareTo(max) > 0) {
+            throw new FQLError("'%s' is above max: %s > %s", name, value, max);
         }
         return value;
     }
