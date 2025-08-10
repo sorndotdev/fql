@@ -67,7 +67,7 @@ class DataPointQueryTest implements DataPointQueryTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPointQuery.instruments.size' is below min: 0 < 1", expected.getMessage());
+        assertEquals("[DataPointQuery#<init>] '0' is below min '1'", expected.getMessage());
     }
 
     @Test

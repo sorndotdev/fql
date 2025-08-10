@@ -15,8 +15,8 @@ public class FiscalQuarter implements Comparable<FiscalQuarter>, ValueObject<Int
     protected final int value;
 
     protected FiscalQuarter(int value) {
-        checkMin("fiscalQuarter.value", MIN_VALUE, value);
-        checkMax("fiscalQuarter.value", MAX_VALUE, value);
+        checkMin(MIN_VALUE, value);
+        checkMax(MAX_VALUE, value);
         this.value = value;
     }
 
@@ -25,8 +25,8 @@ public class FiscalQuarter implements Comparable<FiscalQuarter>, ValueObject<Int
     }
 
     public static FiscalQuarter fiscalQuarter(String value) {
-        checkNotNull("fiscalQuarter.value", value);
-        checkMatches("fiscalQuarter.value", PATTERN, value);
+        checkNotNull("value", value);
+        checkMatches(PATTERN, value);
         return fiscalQuarter(parseInt(value.substring(1)));
     }
 

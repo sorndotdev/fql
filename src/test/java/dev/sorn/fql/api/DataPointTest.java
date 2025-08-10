@@ -79,7 +79,7 @@ class DataPointTest implements DataPointTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPoint.instrument' is required", expected.getMessage());
+        assertEquals("[DataPoint#<init>]: 'builder.instrument' is required", expected.getMessage());
     }
 
     @Test
@@ -99,7 +99,7 @@ class DataPointTest implements DataPointTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPoint.metric' is required", expected.getMessage());
+        assertEquals("[DataPoint#<init>]: 'builder.metric' is required", expected.getMessage());
     }
 
     @Test
@@ -119,7 +119,7 @@ class DataPointTest implements DataPointTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPoint.fiscalPeriod' is required", expected.getMessage());
+        assertEquals("[DataPoint#<init>]: 'builder.fiscalPeriod' is required", expected.getMessage());
     }
 
     @Test
@@ -139,7 +139,7 @@ class DataPointTest implements DataPointTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPoint.unit' is required", expected.getMessage());
+        assertEquals("[DataPoint#<init>]: 'builder.unit' is required", expected.getMessage());
     }
 
     @Test
@@ -159,7 +159,7 @@ class DataPointTest implements DataPointTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPoint.scale' is required", expected.getMessage());
+        assertEquals("[DataPoint#<init>]: 'builder.scale' is required", expected.getMessage());
     }
 
     @Test
@@ -179,7 +179,7 @@ class DataPointTest implements DataPointTestData {
         // then
         assertNotNull(expected, "exception not thrown");
         assertInstanceOf(FQLError.class, expected, "wrong exception instance");
-        assertEquals("'dataPoint.source' is required", expected.getMessage());
+        assertEquals("[DataPoint#<init>]: 'builder.source' is required", expected.getMessage());
     }
 
     @Test

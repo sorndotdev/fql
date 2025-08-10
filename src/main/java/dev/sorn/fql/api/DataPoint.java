@@ -13,13 +13,13 @@ public class DataPoint {
     protected final DataPointValue value;
 
     protected DataPoint(DataPoint.Builder builder) {
-        this.instrument = checkNotNull("dataPoint.instrument", builder.instrument);
-        this.metric = checkNotNull("dataPoint.metric", builder.metric);
-        this.fiscalPeriod = checkNotNull("dataPoint.fiscalPeriod", builder.fiscalPeriod);
-        this.unit = checkNotNull("dataPoint.unit", builder.unit);
-        this.scale = checkNotNull("dataPoint.scale", builder.scale);
-        this.source = checkNotNull("dataPoint.source", builder.source);
-        this.value = checkNotNull("dataPoint.value", builder.value);
+        this.instrument = checkNotNull("builder.instrument", builder.instrument);
+        this.metric = checkNotNull("builder.metric", builder.metric);
+        this.fiscalPeriod = checkNotNull("builder.fiscalPeriod", builder.fiscalPeriod);
+        this.unit = checkNotNull("builder.unit", builder.unit);
+        this.scale = checkNotNull("builder.scale", builder.scale);
+        this.source = checkNotNull("builder.source", builder.source);
+        this.value = checkNotNull("builder.value", builder.value);
     }
 
     public final Instrument instrument() {

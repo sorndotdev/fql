@@ -49,7 +49,7 @@ class FiscalYearTest implements FiscalYearTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals("'fiscalYear.value' does not match '(\\d{4})': " + value, e.getMessage());
+        assertEquals(format("[FiscalYear#fiscalYear] '%s' does not match (\\d{4})", value), e.getMessage());
     }
 
     @ParameterizedTest
@@ -62,7 +62,7 @@ class FiscalYearTest implements FiscalYearTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(format("'fiscalYear.value' is below min: %d < 1000", value), e.getMessage());
+        assertEquals(format("[FiscalYear#<init>] '%d' is below min '1000'", value), e.getMessage());
     }
 
     @ParameterizedTest
@@ -75,7 +75,7 @@ class FiscalYearTest implements FiscalYearTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(format("'fiscalYear.value' is above max: %d > 9999", value), e.getMessage());
+        assertEquals(format("[FiscalYear#<init>] '%d' is above max '9999'", value), e.getMessage());
     }
 
     @Test

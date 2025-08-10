@@ -11,6 +11,7 @@
     <suppress files=".*[\\/]generated-sources[\\/].*" checks=".*"/>
 
     <!-- Ordered alphabetically -->
+    <suppress files="CallerInfo.java" checks="MagicNumber"/> <!-- reason: getCallerClassAndMethodName() -->
     <suppress files="DataPoint.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="DataPoint.java" checks="NPathComplexity"/> <!-- reason: equals() -->
     <suppress files="DataPointQuery.java" checks="NeedBraces"/> <!-- reason: equals() -->

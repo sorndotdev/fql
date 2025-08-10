@@ -14,8 +14,8 @@ public class FiscalPeriodRange implements ValueObject<String> {
     protected Optional<FiscalPeriod> endInclusive;
 
     protected FiscalPeriodRange(Optional<FiscalPeriod> startInclusive, Optional<FiscalPeriod> endInclusive) {
-        checkNotNull("fiscalPeriodRange.startInclusive", startInclusive);
-        checkNotNull("fiscalPeriodRange.endInclusive", endInclusive);
+        checkNotNull("startInclusive", startInclusive);
+        checkNotNull("endInclusive", endInclusive);
         if (startInclusive.isPresent() && endInclusive.isPresent()) {
             if (startInclusive.get().compareTo(endInclusive.get()) > 0) {
                 throw new FQLError("'%s' is after '%s': %s < %s", "fiscalPeriodRange.startInclusive", "fiscalPeriodRange.endInclusive", startInclusive.get(), endInclusive.get());

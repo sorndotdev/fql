@@ -36,7 +36,7 @@ class ScaleTest implements ScaleTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(format("'scale.value' is below min: %d < %d", value, BASE), e.getMessage());
+        assertEquals(format("[Scale#scale] '%d' is below min '%d'", value, BASE), e.getMessage());
     }
 
     @Test

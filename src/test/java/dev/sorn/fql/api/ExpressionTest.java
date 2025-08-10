@@ -19,7 +19,7 @@ class ExpressionTest {
         FQLError e = assertThrows(FQLError.class, () -> expression(invalid));
 
         // then
-        assertEquals("'expression' is required", e.getMessage());
+        assertEquals("[Expression#expression]: 'expression' is required", e.getMessage());
     }
 
     @Test

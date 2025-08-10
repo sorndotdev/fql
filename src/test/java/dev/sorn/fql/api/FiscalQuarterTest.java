@@ -48,7 +48,7 @@ class FiscalQuarterTest implements FiscalQuarterTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals("'fiscalQuarter.value' does not match 'Q([1-4])': " + value, e.getMessage());
+        assertEquals(format("[FiscalQuarter#fiscalQuarter] '%s' does not match Q([1-4])", value), e.getMessage());
     }
 
     @ParameterizedTest
@@ -61,7 +61,7 @@ class FiscalQuarterTest implements FiscalQuarterTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(format("'fiscalQuarter.value' is below min: %d < 1", value), e.getMessage());
+        assertEquals(format("[FiscalQuarter#<init>] '%s' is below min '1'", value), e.getMessage());
     }
 
     @ParameterizedTest
@@ -74,7 +74,7 @@ class FiscalQuarterTest implements FiscalQuarterTestData {
         var e = assertThrows(FQLError.class, () -> f.apply(value));
 
         // then
-        assertEquals(format("'fiscalQuarter.value' is above max: %d > 4", value), e.getMessage());
+        assertEquals(format("[FiscalQuarter#<init>] '%d' is above max '4'", value), e.getMessage());
     }
 
     @Test

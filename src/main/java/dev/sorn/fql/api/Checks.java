@@ -13,35 +13,40 @@ public final class Checks {
 
     public static <T> T checkNotNull(String name, T value) {
         if (value == null) {
-            throw new FQLError("'%s' is required", name);
+            String caller = CallerInfo.getCallerClassAndMethodName();
+            throw new FQLError("[%s]: '%s' is required", caller, name);
         }
         return value;
     }
 
-    public static <T extends Comparable<T>> T checkMin(String name, T min, T value) {
+    public static <T extends Comparable<T>> T checkMin(T min, T value) {
         if (value.compareTo(min) < 0) {
-            throw new FQLError("'%s' is below min: %s < %s", name, value, min);
+            String caller = CallerInfo.getCallerClassAndMethodName();
+            throw new FQLError("[%s] '%s' is below min '%s'", caller, value, min);
         }
         return value;
     }
 
-    public static <T extends Comparable<T>> T checkMax(String name, T max, T value) {
+    public static <T extends Comparable<T>> T checkMax(T max, T value) {
         if (value.compareTo(max) > 0) {
-            throw new FQLError("'%s' is above max: %s > %s", name, value, max);
+            String caller = CallerInfo.getCallerClassAndMethodName();
+            throw new FQLError("[%s] '%s' is above max '%s'", caller, value, max);
         }
         return value;
     }
 
-    public static String checkMatches(String name, Pattern pattern, String value) {
+    public static String checkMatches(Pattern pattern, String value) {
         if (!pattern.matcher(value).matches()) {
-            throw new FQLError("'%s' does not match '%s': %s", name, pattern.pattern(), value);
+            String caller = CallerInfo.getCallerClassAndMethodName();
+            throw new FQLError("[%s] '%s' does not match %s", caller, value, pattern.pattern());
         }
         return value;
     }
 
-    public static <T> T checkInstanceOf(String name, Class<T> clazz, Object value) {
+    public static <T> T checkInstanceOf(Class<T> clazz, Object value) {
         if (!clazz.isAssignableFrom(value.getClass())) {
-            throw new FQLError("'%s' is not an instance of '%s': %s", name, clazz.getName(), value);
+            String caller = CallerInfo.getCallerClassAndMethodName();
+            throw new FQLError("[%s] '%s' is not an instance of '%s'", caller, value, clazz.getName());
         }
         return clazz.cast(value);
     }

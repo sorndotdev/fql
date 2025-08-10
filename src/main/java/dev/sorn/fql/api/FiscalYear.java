@@ -15,8 +15,8 @@ public class FiscalYear implements Comparable<FiscalYear>, ValueObject<Integer> 
     protected final int value;
 
     protected FiscalYear(int value) {
-        checkMin("fiscalYear.value", MIN_VALUE, value);
-        checkMax("fiscalYear.value", MAX_VALUE, value);
+        checkMin(MIN_VALUE, value);
+        checkMax(MAX_VALUE, value);
         this.value = value;
     }
 
@@ -25,8 +25,8 @@ public class FiscalYear implements Comparable<FiscalYear>, ValueObject<Integer> 
     }
 
     public static FiscalYear fiscalYear(String value) {
-        checkNotNull("fiscalYear.value", value);
-        checkMatches("fiscalYear.value", PATTERN, value);
+        checkNotNull("value", value);
+        checkMatches(PATTERN, value);
         return fiscalYear(parseInt(value));
     }
 

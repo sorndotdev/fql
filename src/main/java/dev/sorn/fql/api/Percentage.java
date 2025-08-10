@@ -25,9 +25,9 @@ public final class Percentage implements DataPointValue {
 
     private Percentage(BigDecimal value, boolean validate) {
         if (validate) {
-            checkNotNull("percentage.value", value);
-            checkMin("percentage.value", MIN_VALUE.value(), value);
-            checkMax("percentage.value", MAX_VALUE.value(), value);
+            checkNotNull("value", value);
+            checkMin(MIN_VALUE.value(), value);
+            checkMax(MAX_VALUE.value(), value);
         }
         this.value = value;
     }
@@ -45,14 +45,14 @@ public final class Percentage implements DataPointValue {
     }
 
     public static Percentage percentage(String value) {
-        checkNotNull("percentage.value", value);
+        checkNotNull("value", value);
         String normalized = value.strip();
         boolean negative = false;
         if (normalized.startsWith("-")) {
             negative = true;
             normalized = normalized.substring(1);
         }
-        checkMatches("percentage.value", PATTERN, normalized);
+        checkMatches(PATTERN, normalized);
         BigDecimal decimalValue;
         if (normalized.endsWith("%")) {
             normalized = normalized.substring(0, normalized.length() - 1); // remove '%'
@@ -68,25 +68,25 @@ public final class Percentage implements DataPointValue {
 
     @Override
     public Percentage add(DataPointValue that) {
-        Percentage pct = checkInstanceOf("percentage.add", Percentage.class, that);
+        Percentage pct = checkInstanceOf(Percentage.class, that);
         return new Percentage(this.value.add(pct.value));
     }
 
     @Override
     public Percentage sub(DataPointValue that) {
-        Percentage pct = checkInstanceOf("percentage.sub", Percentage.class, that);
+        Percentage pct = checkInstanceOf(Percentage.class, that);
         return new Percentage(this.value.subtract(pct.value));
     }
 
     @Override
     public Percentage mul(DataPointValue that) {
-        Percentage pct = checkInstanceOf("percentage.mul", Percentage.class, that);
+        Percentage pct = checkInstanceOf(Percentage.class, that);
         return new Percentage(this.value.multiply(pct.value));
     }
 
     @Override
     public Percentage div(DataPointValue that) {
-        Percentage pct = checkInstanceOf("percentage.div", Percentage.class, that);
+        Percentage pct = checkInstanceOf(Percentage.class, that);
         return new Percentage(this.value.divide(pct.value, DECIMAL32));
     }
 
@@ -106,7 +106,7 @@ public final class Percentage implements DataPointValue {
 
     @Override
     public int compareTo(DataPointValue that) {
-        Percentage pct = checkInstanceOf("percentage.compareTo", Percentage.class, that);
+        Percentage pct = checkInstanceOf(Percentage.class, that);
         return this.value.compareTo(pct.value);
     }
 

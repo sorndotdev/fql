@@ -5,7 +5,6 @@ import java.lang.reflect.Constructor;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.function.TriFunction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -14,7 +13,6 @@ import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
 import static java.lang.reflect.Modifier.isPrivate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,7 +42,7 @@ class ChecksTest {
 
         // then
         var e = assertThrows(FQLError.class, () -> f.apply(name, o));
-        assertEquals("'<TEST>' is required", e.getMessage());
+        assertEquals("[ChecksTest#lambda$checkNotNull_null_throws$0]: '<TEST>' is required", e.getMessage());
     }
 
     @ParameterizedTest
@@ -55,7 +53,7 @@ class ChecksTest {
         int min = 1000;
 
         // when
-        int v2 = checkMin(name, min, v);
+        int v2 = checkMin(min, v);
 
         // then
         assertEquals(v, v2);
@@ -69,11 +67,11 @@ class ChecksTest {
         int v = 999;
 
         // when
-        TriFunction<String, Integer, Integer, Integer> f = Checks::checkMin;
+        BiFunction<Integer, Integer, Integer> f = Checks::checkMin;
 
         // then
-        var e = assertThrows(FQLError.class, () -> f.apply(name, min, v));
-        assertEquals("'<TEST>' is below min: 999 < 1000", e.getMessage());
+        var e = assertThrows(FQLError.class, () -> f.apply(min, v));
+        assertEquals("[ChecksTest#lambda$checkMin_value_below_throws$1] '999' is below min '1000'", e.getMessage());
     }
 
     @ParameterizedTest
@@ -84,7 +82,7 @@ class ChecksTest {
         int max = 1000;
 
         // when
-        int v2 = checkMax(name, max, v);
+        int v2 = checkMax(max, v);
 
         // then
         assertEquals(v, v2);
@@ -93,16 +91,15 @@ class ChecksTest {
     @Test
     void checkMax_value_above_throws() {
         // given
-        String name = "<TEST>";
         int max = 1000;
         int v = 1001;
 
         // when
-        TriFunction<String, Integer, Integer, Integer> f = Checks::checkMax;
+        BiFunction<Integer, Integer, Integer> f = Checks::checkMax;
 
         // then
-        var e = assertThrows(FQLError.class, () -> f.apply(name, max, v));
-        assertEquals("'<TEST>' is above max: 1001 > 1000", e.getMessage());
+        var e = assertThrows(FQLError.class, () -> f.apply(max, v));
+        assertEquals("[ChecksTest#lambda$checkMax_value_above_throws$2] '1001' is above max '1000'", e.getMessage());
     }
 
     @ParameterizedTest
@@ -120,7 +117,7 @@ class ChecksTest {
         Pattern pattern = Pattern.compile("^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$");
 
         // when
-        String s = checkMatches("palindrome", pattern, value);
+        String s = checkMatches(pattern, value);
 
         // then
         assertEquals(value, s);
@@ -139,10 +136,11 @@ class ChecksTest {
         Pattern pattern = Pattern.compile("^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$");
 
         // when
-        TriFunction<String, Pattern, String, String> f = Checks::checkMatches;
+        BiFunction<Pattern, String, String> f = Checks::checkMatches;
 
         // then
-        assertThrows(FQLError.class, () -> f.apply("palindrome", pattern, value));
+        var e = assertThrows(FQLError.class, () -> f.apply(pattern, value));
+        assertEquals(String.format("[ChecksTest#lambda$checkMatches_no_match_throws$3] '%s' does not match ^(?i)([a-z])([a-z])?([a-z])?\\2?\\1$", value), e.getMessage());
     }
 
     @Test
@@ -151,10 +149,11 @@ class ChecksTest {
         Double value = 1.0;
 
         // when
-        TriFunction<String, Class<Integer>, Object, Integer> f = Checks::checkInstanceOf;
+        BiFunction<Class<Integer>, Object, Integer> f = Checks::checkInstanceOf;
 
         // then
-        assertThrows(FQLError.class, () -> f.apply("checkInstanceOf_throws", Integer.class, value));
+        var e = assertThrows(FQLError.class, () -> f.apply(Integer.class, value));
+        assertEquals("[ChecksTest#lambda$checkInstanceOf_throws$4] '1.0' is not an instance of 'java.lang.Integer'", e.getMessage());
     }
 
     @Test

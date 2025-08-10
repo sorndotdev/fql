@@ -18,14 +18,14 @@ public class FiscalPeriod implements Comparable<FiscalPeriod>, ValueObject<Strin
     protected final Optional<FiscalQuarter> quarter;
 
     protected FiscalPeriod(FiscalYear year, Optional<FiscalQuarter> quarter) {
-        checkNotNull("fiscalPeriod.year", year);
-        checkNotNull("fiscalPeriod.quarter", quarter);
+        checkNotNull("year", year);
+        checkNotNull("quarter", quarter);
         this.year = year;
         this.quarter = quarter;
     }
 
     public static FiscalPeriod fiscalPeriod(String value) throws FQLError {
-        checkNotNull("fiscalPeriod.value", value);
+        checkNotNull("value", value);
         Matcher m;
 
         m = YEAR_PATTERN.matcher(value);

@@ -20,9 +20,9 @@ public class DataPointQuery {
     protected final Collection<Source> sources;
 
     protected DataPointQuery(Builder builder) {
-        checkNotNull("dataPointQuery.builder", builder);
-        checkNotNull("dataPointQuery.fiscalPeriodRange", builder.fiscalPeriodRange);
-        checkMin("dataPointQuery.instruments.size", 1, builder.instruments.size());
+        checkNotNull("builder", builder);
+        checkNotNull("builder.fiscalPeriodRange", builder.fiscalPeriodRange);
+        checkMin(1, builder.instruments.size());
         this.fiscalPeriodRange = builder.fiscalPeriodRange;
         this.instruments = builder.instruments;
         this.metrics = builder.metrics;

@@ -82,7 +82,7 @@ class PercentageTest implements PercentageTestData {
         FQLError e = assertThrows(FQLError.class, () -> percentage(value));
 
         // then
-        assertEquals("'percentage.value' is required", e.getMessage());
+        assertEquals("[Percentage#percentage]: 'value' is required", e.getMessage());
     }
 
     @Test
@@ -94,7 +94,7 @@ class PercentageTest implements PercentageTestData {
         FQLError e = assertThrows(FQLError.class, () -> percentage(value));
 
         // then
-        assertEquals("'percentage.value' is above max: 10000001 > 1E+7", e.getMessage());
+        assertEquals("[Percentage#<init>] '10000001' is above max '1E+7'", e.getMessage());
     }
 
     @Test
@@ -106,7 +106,7 @@ class PercentageTest implements PercentageTestData {
         FQLError e = assertThrows(FQLError.class, () -> percentage(value));
 
         // then
-        assertEquals("'percentage.value' is below min: -10000001 < -1E+7", e.getMessage());
+        assertEquals("[Percentage#<init>] '-10000001' is below min '-1E+7'", e.getMessage());
     }
 
     @Test

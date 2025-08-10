@@ -14,8 +14,8 @@ public interface PercentageTestData {
 
     default Percentage aRandomPercentage(double min, double max) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        checkMin("aRandomPercentage.min", Percentage.MIN_VALUE.doubleValue(), min);
-        checkMin("aRandomPercentage.max", Percentage.MAX_VALUE.doubleValue(), max);
+        checkMin(Percentage.MIN_VALUE.doubleValue(), min);
+        checkMin(Percentage.MAX_VALUE.doubleValue(), max);
         return percentage(random.nextDouble(min, max));
     }
 }
