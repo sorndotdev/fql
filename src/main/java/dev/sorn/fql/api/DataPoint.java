@@ -3,16 +3,16 @@ package dev.sorn.fql.api;
 import java.util.Objects;
 import static dev.sorn.fql.api.Checks.checkNotNull;
 
-public class DataPoint<T extends Comparable<T>> {
+public class DataPoint {
     protected final Instrument instrument;
     protected final Metric metric;
     protected final FiscalPeriod fiscalPeriod;
     protected final Unit unit;
     protected final Scale scale;
     protected final Source source;
-    protected final T value;
+    protected final DataPointValue value;
 
-    protected DataPoint(DataPoint.Builder<T> builder) {
+    protected DataPoint(DataPoint.Builder builder) {
         this.instrument = checkNotNull("dataPoint.instrument", builder.instrument);
         this.metric = checkNotNull("dataPoint.metric", builder.metric);
         this.fiscalPeriod = checkNotNull("dataPoint.fiscalPeriod", builder.fiscalPeriod);
@@ -46,7 +46,7 @@ public class DataPoint<T extends Comparable<T>> {
         return source;
     }
 
-    public final T value() {
+    public final DataPointValue value() {
         return value;
     }
 
@@ -72,15 +72,16 @@ public class DataPoint<T extends Comparable<T>> {
 
     @SuppressWarnings("all")
     @Override
-    protected DataPoint<T> clone() {
-        return new DataPoint<T>(DataPoint.Builder.<T>dataPoint()
+    protected DataPoint clone() {
+        return Builder.dataPoint()
             .instrument(instrument)
             .metric(metric)
             .fiscalPeriod(fiscalPeriod)
             .unit(unit)
             .scale(scale)
             .source(source)
-            .value(value));
+            .value(value)
+            .build();
     }
 
     @Override
@@ -97,56 +98,56 @@ public class DataPoint<T extends Comparable<T>> {
         );
     }
 
-    public static class Builder<T extends Comparable<T>> {
+    public static class Builder {
         protected Instrument instrument;
         protected Metric metric;
         protected FiscalPeriod fiscalPeriod;
         protected Unit unit;
         protected Scale scale;
         protected Source source;
-        protected T value;
+        protected DataPointValue value;
 
-        public static <T extends Comparable<T>> Builder<T> dataPoint() {
-            return new Builder<>();
+        public static Builder dataPoint() {
+            return new Builder();
         }
 
-        public final Builder<T> instrument(Instrument instrument) {
+        public final Builder instrument(Instrument instrument) {
             this.instrument = instrument;
             return this;
         }
 
-        public final Builder<T> metric(Metric metric) {
+        public final Builder metric(Metric metric) {
             this.metric = metric;
             return this;
         }
 
-        public final Builder<T> fiscalPeriod(FiscalPeriod fiscalPeriod) {
+        public final Builder fiscalPeriod(FiscalPeriod fiscalPeriod) {
             this.fiscalPeriod = fiscalPeriod;
             return this;
         }
 
-        public final Builder<T> unit(Unit unit) {
+        public final Builder unit(Unit unit) {
             this.unit = unit;
             return this;
         }
 
-        public final Builder<T> scale(Scale scale) {
+        public final Builder scale(Scale scale) {
             this.scale = scale;
             return this;
         }
 
-        public final Builder<T> source(Source source) {
+        public final Builder source(Source source) {
             this.source = source;
             return this;
         }
 
-        public final Builder<T> value(T value) {
+        public final Builder value(DataPointValue value) {
             this.value = value;
             return this;
         }
 
-        public DataPoint<T> build() {
-            return new DataPoint<>(this);
+        public DataPoint build() {
+            return new DataPoint(this);
         }
     }
 }

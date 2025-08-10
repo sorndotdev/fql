@@ -3,6 +3,7 @@ package dev.sorn.fql.api;
 
 import java.lang.reflect.Constructor;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.function.TriFunction;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
 import static java.lang.reflect.Modifier.isPrivate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -141,6 +143,18 @@ class ChecksTest {
 
         // then
         assertThrows(FQLError.class, () -> f.apply("palindrome", pattern, value));
+    }
+
+    @Test
+    void checkInstanceOf_throws() {
+        // given
+        Double value = 1.0;
+
+        // when
+        TriFunction<String, Class<Integer>, Object, Integer> f = Checks::checkInstanceOf;
+
+        // then
+        assertThrows(FQLError.class, () -> f.apply("checkInstanceOf_throws", Integer.class, value));
     }
 
     @Test

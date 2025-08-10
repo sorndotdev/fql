@@ -38,4 +38,11 @@ public final class Checks {
         }
         return value;
     }
+
+    public static <T> T checkInstanceOf(String name, Class<T> clazz, Object value) {
+        if (!clazz.isAssignableFrom(value.getClass())) {
+            throw new FQLError("'%s' is not an instance of '%s': %s", name, clazz.getName(), value);
+        }
+        return clazz.cast(value);
+    }
 }

@@ -4,5 +4,5 @@ import java.util.Collection;
 
 @FunctionalInterface
 public interface DataPointQueryHandler {
-    <T extends Comparable<T>> Collection<DataPoint<T>> findDataPoints(DataPointQuery query);
+    Collection<DataPoint> findDataPoints(DataPointQuery query);
 }

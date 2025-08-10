@@ -3,9 +3,11 @@ package dev.sorn.fql.api;
 import dev.sorn.fql.DataPointTestData;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
+import static dev.sorn.fql.api.DataPoint.Builder.dataPoint;
 import static dev.sorn.fql.api.FiscalPeriod.fiscalPeriod;
 import static dev.sorn.fql.api.Instrument.instrument;
 import static dev.sorn.fql.api.Metric.metric;
+import static dev.sorn.fql.api.Percentage.pct;
 import static dev.sorn.fql.api.Scale.scale;
 import static dev.sorn.fql.api.Source.source;
 import static dev.sorn.fql.api.Unit.unit;
@@ -26,10 +28,10 @@ class DataPointTest implements DataPointTestData {
         Unit unit = unit("USD");
         Scale scale = scale(1_000_000);
         Source source = source("SEEKING_ALPHA");
-        int value = 124300;
+        Percentage value = pct("42%");
 
         // when
-        DataPoint<Integer> dp = DataPoint.Builder.<Integer>dataPoint()
+        DataPoint dp = dataPoint()
             .instrument(instrument)
             .metric(metric)
             .fiscalPeriod(fiscalPeriod)
@@ -50,156 +52,20 @@ class DataPointTest implements DataPointTestData {
     }
 
     @Test
-    void aByteDataPoint_builds() {
+    void aRandomPercentageDataPoint_builds() {
         // given
-        byte b = Byte.MAX_VALUE;
 
         // when
-        DataPoint<Byte> dp = aByteDataPoint(b);
+        DataPoint dp = aRandomPercentageDataPoint();
 
         // then
-        assertEquals(b, dp.value());
-    }
-
-    @Test
-    void aShortDataPoint_builds() {
-        // given
-        short s = Short.MAX_VALUE;
-
-        // when
-        DataPoint<Short> dp = aShortDataPoint(s);
-
-        // then
-        assertEquals(s, dp.value());
-    }
-
-    @Test
-    void anIntDataPoint_builds() {
-        // given
-        int i = Integer.MAX_VALUE;
-
-        // when
-        DataPoint<Integer> dp = anIntDataPoint(i);
-
-        // then
-        assertEquals(i, dp.value());
-    }
-
-    @Test
-    void aLongDataPoint_builds() {
-        // given
-        long l = Long.MAX_VALUE;
-
-        // when
-        DataPoint<Long> dp = aLongDataPoint(l);
-
-        // then
-        assertEquals(l, dp.value());
-    }
-
-    @Test
-    void aFloatDataPoint_builds() {
-        // given
-        float f = Float.MAX_VALUE;
-
-        // when
-        DataPoint<Float> dp = aFloatDataPoint(f);
-
-        // then
-        assertEquals(f, dp.value());
-    }
-
-    @Test
-    void aDoubleDataPoint_builds() {
-        // given
-        double d = Double.MAX_VALUE;
-
-        // when
-        DataPoint<Double> dp = aDoubleDataPoint(d);
-
-        // then
-        assertEquals(d, dp.value());
-    }
-
-    @Test
-    void aBigDecimalDataPoint_builds() {
-        // given
-        BigDecimal bd = new BigDecimal("1.0E309");
-
-        // when
-        DataPoint<BigDecimal> dp = aBigDecimalDataPoint(bd);
-
-        // then
-        assertEquals(bd, dp.value());
-    }
-
-    @Test
-    void aRandomByteDataPoint_builds() {
-        // when
-        DataPoint<Byte> dp = aRandomByteDataPoint();
-
-        // then
-        assertInstanceOf(Byte.class, dp.value());
-    }
-
-    @Test
-    void aRandomShortDataPoint_builds() {
-        // when
-        DataPoint<Short> dp = aRandomShortDataPoint();
-
-        // then
-        assertInstanceOf(Short.class, dp.value());
-    }
-
-    @Test
-    void aRandomIntDataPoint_builds() {
-        // when
-        DataPoint<Integer> dp = aRandomIntDataPoint();
-
-        // then
-        assertInstanceOf(Integer.class, dp.value());
-    }
-
-    @Test
-    void aRandomLongDataPoint_builds() {
-        // when
-        DataPoint<Long> dp = aRandomLongDataPoint();
-
-        // then
-        assertInstanceOf(Long.class, dp.value());
-    }
-
-    @Test
-    void aRandomFloatDataPoint_builds() {
-        // when
-        DataPoint<Float> dp = aRandomFloatDataPoint();
-
-        // then
-        assertInstanceOf(Float.class, dp.value());
-    }
-
-    @Test
-    void aRandomDoubleDataPoint_builds() {
-        // when
-        DataPoint<Double> dp = aRandomDoubleDataPoint();
-
-        // then
-        assertInstanceOf(Double.class, dp.value());
-    }
-
-    @Test
-    void aRandomBigDecimalDataPoint_builds() {
-        // when
-        DataPoint<BigDecimal> dp = aRandomBigDecimalDataPoint();
-
-        // then
-        assertInstanceOf(BigDecimal.class, dp.value());
+        assertInstanceOf(Percentage.class, dp.value());
     }
 
     @Test
     void dataPoint_missing_instrument_throws() {
         // given
-        DataPoint.Builder<Byte> builder = aRandomDataPointBuilder();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
         builder.instrument(null);
         Exception expected = null;
 
@@ -219,7 +85,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void dataPoint_missing_metric_throws() {
         // given
-        DataPoint.Builder<Byte> builder = aRandomDataPointBuilder();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
         builder.metric(null);
         Exception expected = null;
 
@@ -239,7 +105,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void dataPoint_missing_fiscalPeriod_throws() {
         // given
-        DataPoint.Builder<Byte> builder = aRandomDataPointBuilder();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
         builder.fiscalPeriod(null);
         Exception expected = null;
 
@@ -259,7 +125,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void dataPoint_missing_unit_throws() {
         // given
-        DataPoint.Builder<Byte> builder = aRandomDataPointBuilder();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
         builder.unit(null);
         Exception expected = null;
 
@@ -279,7 +145,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void dataPoint_missing_scale_throws() {
         // given
-        DataPoint.Builder<Byte> builder = aRandomDataPointBuilder();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
         builder.scale(null);
         Exception expected = null;
 
@@ -299,7 +165,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void dataPoint_missing_source_throws() {
         // given
-        DataPoint.Builder<Byte> builder = aRandomDataPointBuilder();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
         builder.source(null);
         Exception expected = null;
 
@@ -319,7 +185,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_same_true() {
         // given
-        DataPoint<Byte> dp1 = aRandomByteDataPoint();
+        DataPoint dp1 = aRandomPercentageDataPoint();
 
         // when
         boolean equal = dp1.equals(dp1);
@@ -331,8 +197,8 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_identical_true() {
         // given
-        DataPoint<Integer> dp1 = aRandomIntDataPoint();
-        DataPoint<Integer> dp2 = dp1.clone();
+        DataPoint dp1 = aRandomPercentageDataPoint();
+        DataPoint dp2 = dp1.clone();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -344,9 +210,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_value_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).value(1000).build();
-        DataPoint<Integer> dp2 = builder.value(1).value(1001).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("42%")).build();
+        DataPoint dp2 = builder.value(pct("28%")).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -358,9 +224,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_instrument_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).instrument(instrument("AAPL")).build();
-        DataPoint<Integer> dp2 = builder.value(1).instrument(instrument("MSFT")).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("3.14%")).instrument(instrument("AAPL")).build();
+        DataPoint dp2 = builder.value(pct("3.14%")).instrument(instrument("MSFT")).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -372,9 +238,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_metric_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).metric(metric("REVENUE")).build();
-        DataPoint<Integer> dp2 = builder.value(1).metric(metric("ASSETS")).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("1%")).metric(metric("REVENUE")).build();
+        DataPoint dp2 = builder.value(pct("1%")).metric(metric("ASSETS")).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -386,9 +252,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_fiscalPeriod_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).fiscalPeriod(fiscalPeriod("1999")).build();
-        DataPoint<Integer> dp2 = builder.value(1).fiscalPeriod(fiscalPeriod("2000")).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("1%")).fiscalPeriod(fiscalPeriod("1999")).build();
+        DataPoint dp2 = builder.value(pct("1%")).fiscalPeriod(fiscalPeriod("2000")).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -400,9 +266,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_unit_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).unit(unit("EUR")).build();
-        DataPoint<Integer> dp2 = builder.value(1).unit(unit("USD")).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("1%")).unit(unit("EUR")).build();
+        DataPoint dp2 = builder.value(pct("1%")).unit(unit("USD")).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -414,9 +280,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_scale_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).scale(scale(1_000)).build();
-        DataPoint<Integer> dp2 = builder.value(1).scale(scale(1_000_000)).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("1%")).scale(scale(1_000)).build();
+        DataPoint dp2 = builder.value(pct("1%")).scale(scale(1_000_000)).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -428,9 +294,9 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_source_false() {
         // given
-        DataPoint.Builder<Integer> builder = aRandomDataPointBuilder();
-        DataPoint<Integer> dp1 = builder.value(1).source(source("BLOOMBERG")).build();
-        DataPoint<Integer> dp2 = builder.value(1).source(source("REFINITIV")).build();
+        DataPoint.Builder builder = aRandomDataPointBuilder();
+        DataPoint dp1 = builder.value(pct("1%")).source(source("BLOOMBERG")).build();
+        DataPoint dp2 = builder.value(pct("1%")).source(source("REFINITIV")).build();
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -442,7 +308,7 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_different_instance_false() {
         // given
-        DataPoint<Integer> dp1 = aRandomIntDataPoint();
+        DataPoint dp1 = aRandomPercentageDataPoint();
         Object dp2 = new Object();
 
         // when
@@ -455,8 +321,8 @@ class DataPointTest implements DataPointTestData {
     @Test
     void equals_null_false() {
         // given
-        DataPoint<Integer> dp1 = anIntDataPoint(1000);
-        DataPoint<Integer> dp2 = null;
+        DataPoint dp1 = aRandomPercentageDataPoint();
+        DataPoint dp2 = null;
 
         // when
         boolean equal = dp1.equals(dp2);
@@ -474,10 +340,10 @@ class DataPointTest implements DataPointTestData {
         Unit unit = unit("USD");
         Scale scale = scale(1_000_000);
         Source source = source("SEEKING_ALPHA");
-        int value = 124300;
+        Percentage value = pct(0.1);
 
         // when
-        DataPoint<Integer> dp = DataPoint.Builder.<Integer>dataPoint()
+        DataPoint dp = dataPoint()
             .instrument(instrument)
             .metric(metric)
             .fiscalPeriod(fiscalPeriod)
@@ -488,7 +354,7 @@ class DataPointTest implements DataPointTestData {
             .build();
 
         // then
-        assertEquals("DataPoint[instrument=AAPL, metric=REVENUE, fiscalPeriod=2024Q4, unit=USD, scale=1000000, source=SEEKING_ALPHA, value=124300]", dp.toString(), "bad string representation: " + dp);
+        assertEquals("DataPoint[instrument=AAPL, metric=REVENUE, fiscalPeriod=2024Q4, unit=USD, scale=1000000, source=SEEKING_ALPHA, value=10%]", dp.toString(), "bad string representation: " + dp);
     }
 
     @Test
@@ -550,10 +416,10 @@ class DataPointTest implements DataPointTestData {
                 return "_SA";
             }
         };
-        int value = 124300;
+        Percentage value = pct("1%");
 
         // when
-        DataPoint<Integer> dp = DataPoint.Builder.<Integer>dataPoint()
+        DataPoint dp = dataPoint()
             .instrument(instrument)
             .metric(metric)
             .fiscalPeriod(fiscalPeriod)
@@ -564,15 +430,15 @@ class DataPointTest implements DataPointTestData {
             .build();
 
         // then
-        String expected = "DataPoint[instrument=_AAPL, metric=_REV, fiscalPeriod=2024Q4, unit=_USD, scale=_MILLIONS, source=_SA, value=124300]";
+        String expected = "DataPoint[instrument=_AAPL, metric=_REV, fiscalPeriod=2024Q4, unit=_USD, scale=_MILLIONS, source=_SA, value=1%]";
         assertEquals(expected, dp.toString(), "toString() should respect interface overrides");
     }
 
     @Test
     void hashCode_consistency() {
         // given
-        DataPoint<Integer> dp1 = aRandomIntDataPoint();
-        DataPoint<Integer> dp2 = dp1.clone();
+        DataPoint dp1 = aRandomPercentageDataPoint();
+        DataPoint dp2 = dp1.clone();
 
         // when
         int hc1 = dp1.hashCode();
