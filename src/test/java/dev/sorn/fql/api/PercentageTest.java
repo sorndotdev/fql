@@ -2,12 +2,16 @@ package dev.sorn.fql.api;
 
 import dev.sorn.fql.PercentageTestData;
 import java.math.BigDecimal;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import static dev.sorn.fql.api.Percentage.pct;
 import static dev.sorn.fql.api.Percentage.percentage;
+import static java.math.RoundingMode.HALF_EVEN;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,11 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PercentageTest implements PercentageTestData {
     @Test
     void constants_have_expected_values() {
-        assertEquals(BigDecimal.ZERO, Percentage.ZERO.value());
-        assertEquals(BigDecimal.ONE, Percentage.ONE.value());
-        assertEquals(new BigDecimal("100"), Percentage.HUNDRED.value());
-        assertEquals(new BigDecimal("-1E+7"), Percentage.MIN_VALUE.value());
-        assertEquals(new BigDecimal("1E+7"), Percentage.MAX_VALUE.value());
+        assertEquals(BigDecimal.ZERO.setScale(4, HALF_EVEN), Percentage.ZERO.value());
+        assertEquals(BigDecimal.ONE.setScale(4, HALF_EVEN), Percentage.ONE.value());
+        assertEquals(new BigDecimal("100").setScale(4, HALF_EVEN), Percentage.HUNDRED.value());
+        assertEquals(new BigDecimal("-1E+7").setScale(4, HALF_EVEN), Percentage.MIN_VALUE.value());
+        assertEquals(new BigDecimal("1E+7").setScale(4, HALF_EVEN), Percentage.MAX_VALUE.value());
     }
 
     @ParameterizedTest
@@ -82,31 +86,31 @@ class PercentageTest implements PercentageTestData {
         FQLError e = assertThrows(FQLError.class, () -> percentage(value));
 
         // then
-        assertEquals("[Percentage#percentage]: 'value' is required", e.getMessage());
+        assertEquals("[Percentage#<init>]: 'value' is required", e.getMessage());
     }
 
     @Test
     void percentage_string_exceeding_max_throws() {
         // given
-        String value = "10000001";
+        String value = "10000000.0001";
 
         // when
         FQLError e = assertThrows(FQLError.class, () -> percentage(value));
 
         // then
-        assertEquals("[Percentage#<init>] '10000001' is above max '1E+7'", e.getMessage());
+        assertEquals("[Percentage#<init>] '10000000.0001' is above max '10000000.0000'", e.getMessage());
     }
 
     @Test
     void percentage_string_below_min_throws() {
         // given
-        String value = "-10000001";
+        String value = "-10000000.0001";
 
         // when
         FQLError e = assertThrows(FQLError.class, () -> percentage(value));
 
         // then
-        assertEquals("[Percentage#<init>] '-10000001' is below min '-1E+7'", e.getMessage());
+        assertEquals("[Percentage#<init>] '-10000000.0001' is below min '-10000000.0000'", e.getMessage());
     }
 
     @Test
@@ -118,7 +122,7 @@ class PercentageTest implements PercentageTestData {
         Percentage p = percentage(value);
 
         // then
-        assertEquals(new BigDecimal("0.5"), p.value());
+        assertEquals(new BigDecimal("0.5000"), p.value());
     }
 
     @Test
@@ -130,7 +134,7 @@ class PercentageTest implements PercentageTestData {
         Percentage p = percentage(value);
 
         // then
-        assertEquals(new BigDecimal("0.5"), p.value());
+        assertEquals(new BigDecimal("0.5000"), p.value());
     }
 
     @Test
@@ -142,7 +146,7 @@ class PercentageTest implements PercentageTestData {
         Percentage p = percentage(value);
 
         // then
-        assertEquals(new BigDecimal("0.42"), p.value());
+        assertEquals(new BigDecimal("0.4200"), p.value());
     }
 
     @Test
@@ -154,7 +158,7 @@ class PercentageTest implements PercentageTestData {
         Percentage p = percentage(value);
 
         // then
-        assertEquals(new BigDecimal("-0.42"), p.value());
+        assertEquals(new BigDecimal("-0.4200"), p.value());
     }
 
     @Test
@@ -166,7 +170,37 @@ class PercentageTest implements PercentageTestData {
         Percentage p = percentage(value);
 
         // then
-        assertEquals(new BigDecimal("0.505"), p.value());
+        assertEquals(new BigDecimal("0.5050"), p.value());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "-0.7,-0.3,true",
+        "0.28,0.42,true",
+        "0.42,0.28,false",
+        "0.42,0.42,false",
+    })
+    void lt(String pct1, String pct2, boolean expected) {
+        // when
+        boolean lt = pct(pct1).lt(pct(pct2));
+
+        // then
+        assertEquals(expected, lt);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "-0.3,-0.7,true",
+        "0.42,0.28,true",
+        "0.28,0.42,false",
+        "0.42,0.42,false",
+    })
+    void gt(String pct1, String pct2, boolean expected) {
+        // when
+        boolean gt = pct(pct1).gt(pct(pct2));
+
+        // then
+        assertEquals(expected, gt);
     }
 
     @Test
@@ -176,10 +210,10 @@ class PercentageTest implements PercentageTestData {
         Percentage p2 = percentage("20%");
 
         // when
-        Percentage result = p1.add(p2);
+        Percentage sum = p1.add(p2);
 
         // then
-        assertEquals(new BigDecimal("0.3"), result.value());
+        assertEquals(new BigDecimal("0.3000"), sum.value());
     }
 
     @Test
@@ -192,7 +226,7 @@ class PercentageTest implements PercentageTestData {
         Percentage result = p1.sub(p2);
 
         // then
-        assertEquals(new BigDecimal("0.2"), result.value());
+        assertEquals(new BigDecimal("0.2000"), result.value());
     }
 
     @Test
@@ -202,10 +236,10 @@ class PercentageTest implements PercentageTestData {
         Percentage p2 = percentage("50%");
 
         // when
-        Percentage result = p1.mul(p2);
+        Percentage product = p1.mul(p2);
 
         // then
-        assertEquals(new BigDecimal("0.25"), result.value());
+        assertEquals(new BigDecimal("0.2500"), product.value());
     }
 
     @Test
@@ -215,10 +249,10 @@ class PercentageTest implements PercentageTestData {
         Percentage p2 = percentage("0.5");
 
         // when
-        Percentage result = p1.div(p2);
+        Percentage quotient = p1.div(p2);
 
         // then
-        assertEquals(new BigDecimal("2"), result.value());
+        assertEquals(new BigDecimal("2.0000"), quotient.value());
     }
 
     @Test
@@ -228,7 +262,11 @@ class PercentageTest implements PercentageTestData {
         Percentage p2 = Percentage.ZERO;
 
         // when
-        assertThrows(ArithmeticException.class, () -> p1.div(p2));
+        BiFunction<Percentage, Percentage, Percentage> f = Percentage::div;
+
+        // then
+        FQLError e = assertThrows(FQLError.class, () -> f.apply(p1, p2));
+        assertEquals("[Percentage#div] cannot divide by zero", e.getMessage());
     }
 
     @Test
@@ -240,7 +278,7 @@ class PercentageTest implements PercentageTestData {
         Percentage result = p.neg();
 
         // then
-        assertEquals(new BigDecimal("-0.5"), result.value());
+        assertEquals(new BigDecimal("-0.5000"), result.value());
     }
 
     @Test
@@ -252,7 +290,19 @@ class PercentageTest implements PercentageTestData {
         Percentage result = p.neg();
 
         // then
-        assertEquals(new BigDecimal("0.5"), result.value());
+        assertEquals(new BigDecimal("0.5000"), result.value());
+    }
+
+    @Test
+    void abs_negative_percentage() {
+        // given
+        Percentage p = percentage("-50%");
+
+        // when
+        Percentage result = p.abs();
+
+        // then
+        assertEquals(new BigDecimal("0.5000"), result.value());
     }
 
     @Test
@@ -361,15 +411,18 @@ class PercentageTest implements PercentageTestData {
     @Test
     void hashCode_equal_for_same_value() {
         // given
-        Percentage p1 = percentage("50%");
-        Percentage p2 = percentage("0.5");
+        Percentage p1 = percentage("50.00%");
+        Percentage p2 = percentage("50%");
+        Percentage p3 = percentage("0.5");
 
         // when
         int h1 = p1.hashCode();
         int h2 = p2.hashCode();
+        int h3 = p3.hashCode();
 
         // then
         assertEquals(h1, h2);
+        assertEquals(h2, h3);
     }
 
     @Test
@@ -425,13 +478,13 @@ class PercentageTest implements PercentageTestData {
     @Test
     void toString_negative_number() {
         // given
-        Percentage p = percentage("-0.5");
+        Percentage p = percentage("-0.55555");
 
         // when
         String result = p.toString();
 
         // then
-        assertEquals("-50%", result);
+        assertEquals("-55.56%", result);
     }
 
     @Test

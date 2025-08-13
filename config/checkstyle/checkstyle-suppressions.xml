@@ -11,6 +11,8 @@
     <suppress files=".*[\\/]generated-sources[\\/].*" checks=".*"/>
 
     <!-- Ordered alphabetically -->
+    <suppress files="Amount.java" checks="AvoidInlineConditionals"/> <!-- reason: toString() -->
+    <suppress files="Amount.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="CallerInfo.java" checks="MagicNumber"/> <!-- reason: getCallerClassAndMethodName() -->
     <suppress files="DataPoint.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="DataPoint.java" checks="NPathComplexity"/> <!-- reason: equals() -->
@@ -23,6 +25,8 @@
     <suppress files="FiscalPeriodRange.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalQuarter.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="FiscalYear.java" checks="NeedBraces"/> <!-- reason: equals() -->
+    <suppress files="Money.java" checks="AvoidInlineConditionals"/> <!-- reason: formatCurrency() -->
+    <suppress files="Percentage.java" checks="AvoidInlineConditionals"/> <!-- reason: toString() -->
     <suppress files="Percentage.java" checks="MagicNumber"/> <!-- reason: toString() -->
     <suppress files="Percentage.java" checks="NeedBraces"/> <!-- reason: equals() -->
     <suppress files="Optionality.java" checks="NeedBraces"/> <!-- reason: optionalComparator() -->

@@ -4,7 +4,7 @@ import dev.sorn.fql.api.DataPoint;
 import dev.sorn.fql.api.Percentage;
 import static dev.sorn.fql.api.DataPoint.Builder.dataPoint;
 
-public interface DataPointTestData extends InstrumentTestData, MetricTestData, FiscalPeriodTestData, UnitTestData, ScaleTestData, SourceTestData, PercentageTestData {
+public interface DataPointTestData extends InstrumentTestData, MetricTestData, FiscalPeriodTestData, CurrencyTestData, ScaleTestData, SourceTestData, PercentageTestData {
     default DataPoint aRandomPercentageDataPoint() {
         return aRandomDataPointBuilder()
             .value(aRandomPercentage())
@@ -22,7 +22,7 @@ public interface DataPointTestData extends InstrumentTestData, MetricTestData, F
             .instrument(aRandomInstrument())
             .metric(aRandomMetric())
             .fiscalPeriod(aRandomFiscalPeriod())
-            .unit(aRandomUnit())
+            .unit(aRandomCurrency())
             .scale(aRandomScale())
             .source(aRandomSource());
     }
