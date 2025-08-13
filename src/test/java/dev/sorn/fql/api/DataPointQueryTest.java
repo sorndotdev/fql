@@ -80,7 +80,7 @@ class DataPointQueryTest implements DataPointQueryTestData {
         exceptions.addAll(List.of(
             assertThrows(UnsupportedOperationException.class, () -> query.instruments().add(aRandomInstrument())),
             assertThrows(UnsupportedOperationException.class, () -> query.metrics().add(aRandomMetric())),
-            assertThrows(UnsupportedOperationException.class, () -> query.units().add(aRandomUnit())),
+            assertThrows(UnsupportedOperationException.class, () -> query.units().add(aRandomCurrency())),
             assertThrows(UnsupportedOperationException.class, () -> query.scales().add(aRandomScale())),
             assertThrows(UnsupportedOperationException.class, () -> query.sources().add(aRandomSource()))));
 
@@ -116,6 +116,20 @@ class DataPointQueryTest implements DataPointQueryTestData {
 
         // then
         assertTrue(equal, format("expected: %s == %s", dpq1, dpq2));
+    }
+
+    @Test
+    void equals_different_fiscalPeriodRange_false() {
+        // given
+        DataPointQuery.Builder builder = aRandomDataPointQueryBuilder();
+        DataPointQuery dpq1 = builder.fiscalPeriodRange(fiscalPeriodRange("2024Q1-")).build();
+        DataPointQuery dpq2 = builder.fiscalPeriodRange(fiscalPeriodRange("2024Q2-")).build();
+
+        // when
+        boolean equal = dpq1.equals(dpq2);
+
+        // then
+        assertFalse(equal, format("expected: %s != %s", dpq1, dpq2));
     }
 
     @Test

@@ -2,8 +2,8 @@ package dev.sorn.fql.api;
 
 
 import java.lang.reflect.Constructor;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +12,7 @@ import static dev.sorn.fql.api.Checks.checkMatches;
 import static dev.sorn.fql.api.Checks.checkMax;
 import static dev.sorn.fql.api.Checks.checkMin;
 import static java.lang.reflect.Modifier.isPrivate;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -154,6 +155,33 @@ class ChecksTest {
         // then
         var e = assertThrows(FQLError.class, () -> f.apply(Integer.class, value));
         assertEquals("[ChecksTest#lambda$checkInstanceOf_throws$4] '1.0' is not an instance of 'java.lang.Integer'", e.getMessage());
+    }
+
+    @Test
+    void checkEquals_returns_true() {
+        // given
+        int a = 3;
+        int b = 3;
+
+        // when
+        BiConsumer<Integer, Integer> f = Checks::checkEquals;
+
+        // then
+        assertDoesNotThrow(() -> f.accept(a, b));
+    }
+
+    @Test
+    void checkEquals_returns_throws() {
+        // given
+        int a = 3;
+        int b = 4;
+
+        // when
+        BiConsumer<Integer, Integer> f = Checks::checkEquals;
+
+        // then
+        FQLError e = assertThrows(FQLError.class, () -> f.accept(a, b));
+        assertEquals("[ChecksTest#lambda$checkEquals_returns_throws$6] '3' is not equal to '4'", e.getMessage());
     }
 
     @Test

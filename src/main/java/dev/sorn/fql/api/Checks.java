@@ -1,6 +1,7 @@
 package dev.sorn.fql.api;
 
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -49,5 +50,12 @@ public final class Checks {
             throw new FQLError("[%s] '%s' is not an instance of '%s'", caller, value, clazz.getName());
         }
         return clazz.cast(value);
+    }
+
+    public static <T> void checkEquals(T a, T b) {
+        if (!Objects.equals(a, b)) {
+            String caller = CallerInfo.getCallerClassAndMethodName();
+            throw new FQLError("[%s] '%s' is not equal to '%s'", caller, a, b);
+        }
     }
 }

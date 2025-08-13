@@ -4,7 +4,7 @@ import dev.sorn.fql.api.DataPointQuery;
 import java.util.Set;
 import static dev.sorn.fql.api.DataPointQuery.Builder.dataPointQuery;
 
-public interface DataPointQueryTestData extends InstrumentTestData, MetricTestData, FiscalPeriodRangeTestData, UnitTestData, ScaleTestData, SourceTestData {
+public interface DataPointQueryTestData extends InstrumentTestData, MetricTestData, FiscalPeriodRangeTestData, CurrencyTestData, ScaleTestData, SourceTestData {
     default DataPointQuery aRandomDataPointQuery() {
         return aRandomDataPointQueryBuilder().build();
     }
@@ -14,7 +14,7 @@ public interface DataPointQueryTestData extends InstrumentTestData, MetricTestDa
             .instruments(Set.of(aRandomInstrument(), aRandomInstrument()))
             .metrics(Set.of(aRandomMetric(), aRandomMetric()))
             .fiscalPeriodRange(aRandomFiscalPeriodRange())
-            .units(Set.of(aRandomUnit()))
+            .units(Set.of(aRandomCurrency()))
             .scales(Set.of(aRandomScale()))
             .sources(Set.of(aRandomSource()));
     }
